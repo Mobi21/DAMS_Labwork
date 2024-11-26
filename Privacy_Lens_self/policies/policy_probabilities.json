@@ -1,0 +1,1914 @@
+[
+    {
+        "policy_id": 1,
+        "id": 16,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 48,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256674017709,
+        "probability_1": 0.9935897433259823
+    },
+    {
+        "policy_id": 1,
+        "id": 85,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 98,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 106,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 108,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 110,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.4790473135726954e-07,
+        "probability_1": 0.9999996520952686
+    },
+    {
+        "policy_id": 1,
+        "id": 112,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.509778593803413e-10,
+        "probability_1": 0.9999999996490221
+    },
+    {
+        "policy_id": 1,
+        "id": 118,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 129,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 136,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.509778593803413e-10,
+        "probability_1": 0.9999999996490221
+    },
+    {
+        "policy_id": 1,
+        "id": 139,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.13582413336893553,
+        "probability_1": 0.8641758666310645
+    },
+    {
+        "policy_id": 1,
+        "id": 140,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.509778593803413e-10,
+        "probability_1": 0.9999999996490221
+    },
+    {
+        "policy_id": 1,
+        "id": 146,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 147,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 148,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.4790473135726954e-07,
+        "probability_1": 0.9999996520952686
+    },
+    {
+        "policy_id": 1,
+        "id": 149,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 157,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 2.2958390797743485e-10,
+        "probability_1": 0.9999999997704161
+    },
+    {
+        "policy_id": 1,
+        "id": 160,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.13582413336893553,
+        "probability_1": 0.8641758666310645
+    },
+    {
+        "policy_id": 1,
+        "id": 163,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9852659679731075,
+        "probability_1": 0.014734032026892475
+    },
+    {
+        "policy_id": 1,
+        "id": 166,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9852659679731075,
+        "probability_1": 0.014734032026892475
+    },
+    {
+        "policy_id": 1,
+        "id": 169,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 177,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.012820686486971876,
+        "probability_1": 0.9871793135130281
+    },
+    {
+        "policy_id": 1,
+        "id": 183,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 185,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 189,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 190,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410260997751467,
+        "probability_1": 0.9935897390022485
+    },
+    {
+        "policy_id": 1,
+        "id": 197,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.076798378194488e-08,
+        "probability_1": 0.9999999492320163
+    },
+    {
+        "policy_id": 1,
+        "id": 202,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 203,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 204,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.076798378194488e-08,
+        "probability_1": 0.9999999492320163
+    },
+    {
+        "policy_id": 1,
+        "id": 206,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 210,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 214,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.012823636490587856,
+        "probability_1": 0.9871763635094122
+    },
+    {
+        "policy_id": 1,
+        "id": 227,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 230,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.076798378194488e-08,
+        "probability_1": 0.9999999492320163
+    },
+    {
+        "policy_id": 1,
+        "id": 231,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.076798378194488e-08,
+        "probability_1": 0.9999999492320163
+    },
+    {
+        "policy_id": 1,
+        "id": 232,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.076798378194488e-08,
+        "probability_1": 0.9999999492320163
+    },
+    {
+        "policy_id": 1,
+        "id": 233,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.8727472662484294,
+        "probability_1": 0.12725273375157073
+    },
+    {
+        "policy_id": 1,
+        "id": 234,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 236,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.076798378194488e-08,
+        "probability_1": 0.9999999492320163
+    },
+    {
+        "policy_id": 1,
+        "id": 237,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 238,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 239,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.4846742419248856e-11,
+        "probability_1": 0.9999999999651532
+    },
+    {
+        "policy_id": 1,
+        "id": 243,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410286216219962,
+        "probability_1": 0.99358971378378
+    },
+    {
+        "policy_id": 1,
+        "id": 244,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.2427693389041175e-09,
+        "probability_1": 0.9999999967572307
+    },
+    {
+        "policy_id": 1,
+        "id": 245,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.7747636912409401,
+        "probability_1": 0.22523630875905995
+    },
+    {
+        "policy_id": 1,
+        "id": 248,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.4790473135726954e-07,
+        "probability_1": 0.9999996520952686
+    },
+    {
+        "policy_id": 1,
+        "id": 250,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410260610480883,
+        "probability_1": 0.9935897393895191
+    },
+    {
+        "policy_id": 1,
+        "id": 251,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 252,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 253,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 256,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 261,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 266,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 270,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9997472122296829,
+        "probability_1": 0.000252787770317162
+    },
+    {
+        "policy_id": 1,
+        "id": 271,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 282,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.012823636490587856,
+        "probability_1": 0.9871763635094122
+    },
+    {
+        "policy_id": 1,
+        "id": 311,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410507242075467,
+        "probability_1": 0.9935894927579246
+    },
+    {
+        "policy_id": 1,
+        "id": 313,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.6482536814686334,
+        "probability_1": 0.3517463185313668
+    },
+    {
+        "policy_id": 1,
+        "id": 341,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 342,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.1262396012703079,
+        "probability_1": 0.8737603987296922
+    },
+    {
+        "policy_id": 1,
+        "id": 347,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410280071313969,
+        "probability_1": 0.993589719928686
+    },
+    {
+        "policy_id": 1,
+        "id": 364,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410280071313969,
+        "probability_1": 0.993589719928686
+    },
+    {
+        "policy_id": 1,
+        "id": 373,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 384,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 399,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.9671866536716236e-10,
+        "probability_1": 0.9999999998032814
+    },
+    {
+        "policy_id": 1,
+        "id": 415,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410280071313969,
+        "probability_1": 0.993589719928686
+    },
+    {
+        "policy_id": 1,
+        "id": 417,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9955535504562839,
+        "probability_1": 0.0044464495437160625
+    },
+    {
+        "policy_id": 1,
+        "id": 418,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 419,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9955535504562839,
+        "probability_1": 0.0044464495437160625
+    },
+    {
+        "policy_id": 1,
+        "id": 436,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256410453913,
+        "probability_1": 0.9935897435895461
+    },
+    {
+        "policy_id": 1,
+        "id": 437,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 2.3842876067352074e-08,
+        "probability_1": 0.9999999761571239
+    },
+    {
+        "policy_id": 1,
+        "id": 455,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 7.112015932164778e-13,
+        "probability_1": 0.9999999999992889
+    },
+    {
+        "policy_id": 1,
+        "id": 470,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.0707013052100618e-09,
+        "probability_1": 0.9999999969292986
+    },
+    {
+        "policy_id": 1,
+        "id": 487,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 7.112015932164778e-13,
+        "probability_1": 0.9999999999992889
+    },
+    {
+        "policy_id": 1,
+        "id": 501,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.340275057989951e-10,
+        "probability_1": 0.9999999998659724
+    },
+    {
+        "policy_id": 1,
+        "id": 521,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 543,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 2.557886090747541e-07,
+        "probability_1": 0.9999997442113909
+    },
+    {
+        "policy_id": 1,
+        "id": 544,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 2.557886090747541e-07,
+        "probability_1": 0.9999997442113909
+    },
+    {
+        "policy_id": 1,
+        "id": 560,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9999844403101118,
+        "probability_1": 1.5559689888303526e-05
+    },
+    {
+        "policy_id": 1,
+        "id": 571,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 572,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 573,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 574,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 575,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 577,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.5429747385084225e-11,
+        "probability_1": 0.9999999999645702
+    },
+    {
+        "policy_id": 1,
+        "id": 578,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 579,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 585,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.176802928496061e-09,
+        "probability_1": 0.999999994823197
+    },
+    {
+        "policy_id": 1,
+        "id": 588,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256410453913,
+        "probability_1": 0.9935897435895461
+    },
+    {
+        "policy_id": 1,
+        "id": 589,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256410453913,
+        "probability_1": 0.9935897435895461
+    },
+    {
+        "policy_id": 1,
+        "id": 590,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256410453913,
+        "probability_1": 0.9935897435895461
+    },
+    {
+        "policy_id": 1,
+        "id": 598,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.01282457358098302,
+        "probability_1": 0.987175426419017
+    },
+    {
+        "policy_id": 1,
+        "id": 606,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 6.768637652019172e-08,
+        "probability_1": 0.9999999323136235
+    },
+    {
+        "policy_id": 1,
+        "id": 607,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.8868081475343835,
+        "probability_1": 0.11319185246561654
+    },
+    {
+        "policy_id": 1,
+        "id": 615,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 6.768637652019172e-08,
+        "probability_1": 0.9999999323136235
+    },
+    {
+        "policy_id": 1,
+        "id": 616,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 6.768637652019172e-08,
+        "probability_1": 0.9999999323136235
+    },
+    {
+        "policy_id": 1,
+        "id": 619,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.01282457358098302,
+        "probability_1": 0.987175426419017
+    },
+    {
+        "policy_id": 1,
+        "id": 624,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 625,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 6.768637652019172e-08,
+        "probability_1": 0.9999999323136235
+    },
+    {
+        "policy_id": 1,
+        "id": 631,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 644,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.0707013052100618e-09,
+        "probability_1": 0.9999999969292986
+    },
+    {
+        "policy_id": 1,
+        "id": 646,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 647,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 649,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.012823745805462536,
+        "probability_1": 0.9871762541945376
+    },
+    {
+        "policy_id": 1,
+        "id": 675,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.340275057989951e-10,
+        "probability_1": 0.9999999998659724
+    },
+    {
+        "policy_id": 1,
+        "id": 678,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.0707013052100618e-09,
+        "probability_1": 0.9999999969292986
+    },
+    {
+        "policy_id": 1,
+        "id": 686,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 687,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 688,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.022044314112322e-09,
+        "probability_1": 0.9999999949779556
+    },
+    {
+        "policy_id": 1,
+        "id": 689,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.6629891195403532e-12,
+        "probability_1": 0.999999999998337
+    },
+    {
+        "policy_id": 1,
+        "id": 690,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.6629891195403532e-12,
+        "probability_1": 0.999999999998337
+    },
+    {
+        "policy_id": 1,
+        "id": 691,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.6629891195403532e-12,
+        "probability_1": 0.999999999998337
+    },
+    {
+        "policy_id": 1,
+        "id": 693,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410258267166052,
+        "probability_1": 0.993589741732834
+    },
+    {
+        "policy_id": 1,
+        "id": 708,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0582811662910486e-14,
+        "probability_1": 0.9999999999999893
+    },
+    {
+        "policy_id": 1,
+        "id": 709,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 710,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 711,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.436882922380543e-13,
+        "probability_1": 0.9999999999996563
+    },
+    {
+        "policy_id": 1,
+        "id": 717,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 728,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.4559895669870342,
+        "probability_1": 0.5440104330129658
+    },
+    {
+        "policy_id": 1,
+        "id": 732,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.0707013052100618e-09,
+        "probability_1": 0.9999999969292986
+    },
+    {
+        "policy_id": 1,
+        "id": 733,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 7.112015932164778e-13,
+        "probability_1": 0.9999999999992889
+    },
+    {
+        "policy_id": 1,
+        "id": 734,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.6847586522260928e-10,
+        "probability_1": 0.9999999998315241
+    },
+    {
+        "policy_id": 1,
+        "id": 735,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.4403353834223971e-08,
+        "probability_1": 0.9999999855966463
+    },
+    {
+        "policy_id": 1,
+        "id": 739,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.219326907058976e-09,
+        "probability_1": 0.9999999947806731
+    },
+    {
+        "policy_id": 1,
+        "id": 740,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.4403353834223971e-08,
+        "probability_1": 0.9999999855966463
+    },
+    {
+        "policy_id": 1,
+        "id": 762,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 766,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.776222105492618e-14,
+        "probability_1": 0.9999999999999822
+    },
+    {
+        "policy_id": 1,
+        "id": 767,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.776222105492618e-14,
+        "probability_1": 0.9999999999999822
+    },
+    {
+        "policy_id": 1,
+        "id": 769,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.776222105492618e-14,
+        "probability_1": 0.9999999999999822
+    },
+    {
+        "policy_id": 1,
+        "id": 775,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 778,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 779,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 790,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 791,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 792,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 793,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 807,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.376819529439577e-14,
+        "probability_1": 0.9999999999999662
+    },
+    {
+        "policy_id": 1,
+        "id": 841,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256411887874,
+        "probability_1": 0.993589743588112
+    },
+    {
+        "policy_id": 1,
+        "id": 843,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 859,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 869,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256411887874,
+        "probability_1": 0.993589743588112
+    },
+    {
+        "policy_id": 1,
+        "id": 874,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006411033919035678,
+        "probability_1": 0.9935889660809644
+    },
+    {
+        "policy_id": 1,
+        "id": 875,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 6.768637652019172e-08,
+        "probability_1": 0.9999999323136235
+    },
+    {
+        "policy_id": 1,
+        "id": 876,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 6.768637652019172e-08,
+        "probability_1": 0.9999999323136235
+    },
+    {
+        "policy_id": 1,
+        "id": 882,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.776222105492618e-14,
+        "probability_1": 0.9999999999999822
+    },
+    {
+        "policy_id": 1,
+        "id": 883,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.776222105492618e-14,
+        "probability_1": 0.9999999999999822
+    },
+    {
+        "policy_id": 1,
+        "id": 884,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.776222105492618e-14,
+        "probability_1": 0.9999999999999822
+    },
+    {
+        "policy_id": 1,
+        "id": 890,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.176802928496061e-09,
+        "probability_1": 0.999999994823197
+    },
+    {
+        "policy_id": 1,
+        "id": 892,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.4403353834223971e-08,
+        "probability_1": 0.9999999855966463
+    },
+    {
+        "policy_id": 1,
+        "id": 903,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 905,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256411887874,
+        "probability_1": 0.993589743588112
+    },
+    {
+        "policy_id": 1,
+        "id": 907,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.776222105492618e-14,
+        "probability_1": 0.9999999999999822
+    },
+    {
+        "policy_id": 1,
+        "id": 908,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 910,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 913,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 916,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.814897864217429e-14,
+        "probability_1": 0.9999999999999819
+    },
+    {
+        "policy_id": 1,
+        "id": 918,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.376819529439577e-14,
+        "probability_1": 0.9999999999999662
+    },
+    {
+        "policy_id": 1,
+        "id": 930,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.8050410029140573e-09,
+        "probability_1": 0.999999998194959
+    },
+    {
+        "policy_id": 1,
+        "id": 931,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.8050410029140573e-09,
+        "probability_1": 0.999999998194959
+    },
+    {
+        "policy_id": 1,
+        "id": 943,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 2.480466775139051e-10,
+        "probability_1": 0.9999999997519534
+    },
+    {
+        "policy_id": 1,
+        "id": 945,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 948,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.8050410029140573e-09,
+        "probability_1": 0.999999998194959
+    },
+    {
+        "policy_id": 1,
+        "id": 952,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 957,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.8198679897999482e-09,
+        "probability_1": 0.9999999981801321
+    },
+    {
+        "policy_id": 1,
+        "id": 959,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 960,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.00641027144490905,
+        "probability_1": 0.993589728555091
+    },
+    {
+        "policy_id": 1,
+        "id": 961,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.00641027144490905,
+        "probability_1": 0.993589728555091
+    },
+    {
+        "policy_id": 1,
+        "id": 962,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.00641027144490905,
+        "probability_1": 0.993589728555091
+    },
+    {
+        "policy_id": 1,
+        "id": 967,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 4.5924556245889304e-08,
+        "probability_1": 0.9999999540754437
+    },
+    {
+        "policy_id": 1,
+        "id": 970,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 993,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1010,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1016,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1055,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.8050410029140573e-09,
+        "probability_1": 0.999999998194959
+    },
+    {
+        "policy_id": 1,
+        "id": 1073,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1077,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 6.527632811452311e-14,
+        "probability_1": 0.9999999999999347
+    },
+    {
+        "policy_id": 1,
+        "id": 1090,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1093,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1096,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.5906072672237536e-12,
+        "probability_1": 0.9999999999964094
+    },
+    {
+        "policy_id": 1,
+        "id": 1101,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9999769766693238,
+        "probability_1": 2.302333067609606e-05
+    },
+    {
+        "policy_id": 1,
+        "id": 1104,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 4.970919673148219e-13,
+        "probability_1": 0.999999999999503
+    },
+    {
+        "policy_id": 1,
+        "id": 1130,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.303310169539365,
+        "probability_1": 0.696689830460635
+    },
+    {
+        "policy_id": 1,
+        "id": 1138,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256468731455,
+        "probability_1": 0.9935897435312686
+    },
+    {
+        "policy_id": 1,
+        "id": 1153,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410266378719772,
+        "probability_1": 0.9935897336212802
+    },
+    {
+        "policy_id": 1,
+        "id": 1154,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410266378719772,
+        "probability_1": 0.9935897336212802
+    },
+    {
+        "policy_id": 1,
+        "id": 1156,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.00641025688093791,
+        "probability_1": 0.993589743119062
+    },
+    {
+        "policy_id": 1,
+        "id": 1166,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256434343685,
+        "probability_1": 0.9935897435656563
+    },
+    {
+        "policy_id": 1,
+        "id": 1172,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 8.055388448233296e-14,
+        "probability_1": 0.9999999999999195
+    },
+    {
+        "policy_id": 1,
+        "id": 1173,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.051313364306946475,
+        "probability_1": 0.9486866356930536
+    },
+    {
+        "policy_id": 1,
+        "id": 1192,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 4.970919673148219e-13,
+        "probability_1": 0.999999999999503
+    },
+    {
+        "policy_id": 1,
+        "id": 1195,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9997472122296829,
+        "probability_1": 0.000252787770317162
+    },
+    {
+        "policy_id": 1,
+        "id": 1207,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.012820524420838248,
+        "probability_1": 0.9871794755791617
+    },
+    {
+        "policy_id": 1,
+        "id": 1367,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.6643385715160615e-11,
+        "probability_1": 0.9999999999833568
+    },
+    {
+        "policy_id": 1,
+        "id": 1370,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1374,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410257125900316,
+        "probability_1": 0.9935897428740996
+    },
+    {
+        "policy_id": 1,
+        "id": 1376,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.0064102574781680815,
+        "probability_1": 0.993589742521832
+    },
+    {
+        "policy_id": 1,
+        "id": 1379,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1380,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256744405106,
+        "probability_1": 0.9935897432555949
+    },
+    {
+        "policy_id": 1,
+        "id": 1381,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256434343685,
+        "probability_1": 0.9935897435656563
+    },
+    {
+        "policy_id": 1,
+        "id": 1383,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256410739609,
+        "probability_1": 0.9935897435892604
+    },
+    {
+        "policy_id": 1,
+        "id": 1384,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 8.055388448233296e-14,
+        "probability_1": 0.9999999999999195
+    },
+    {
+        "policy_id": 1,
+        "id": 1388,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.1828076934975701e-11,
+        "probability_1": 0.9999999999881718
+    },
+    {
+        "policy_id": 1,
+        "id": 1398,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.3381583686095162,
+        "probability_1": 0.6618416313904838
+    },
+    {
+        "policy_id": 1,
+        "id": 1416,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 1418,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.05950197001539791,
+        "probability_1": 0.9404980299846022
+    },
+    {
+        "policy_id": 1,
+        "id": 1425,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.9671866536716236e-10,
+        "probability_1": 0.9999999998032814
+    },
+    {
+        "policy_id": 1,
+        "id": 1434,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410256411887874,
+        "probability_1": 0.993589743588112
+    },
+    {
+        "policy_id": 1,
+        "id": 1461,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1462,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 7.112015932164778e-13,
+        "probability_1": 0.9999999999992889
+    },
+    {
+        "policy_id": 1,
+        "id": 1487,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.2333976516643046e-11,
+        "probability_1": 0.999999999967666
+    },
+    {
+        "policy_id": 1,
+        "id": 1489,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1490,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1503,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.3381583686095162,
+        "probability_1": 0.6618416313904838
+    },
+    {
+        "policy_id": 1,
+        "id": 1520,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1556,
+        "language": "en",
+        "predicted_labels": 0,
+        "probability_0": 0.9997472122296829,
+        "probability_1": 0.000252787770317162
+    },
+    {
+        "policy_id": 1,
+        "id": 1568,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410280071313969,
+        "probability_1": 0.993589719928686
+    },
+    {
+        "policy_id": 1,
+        "id": 1569,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.006410280071313969,
+        "probability_1": 0.993589719928686
+    },
+    {
+        "policy_id": 1,
+        "id": 1570,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 1571,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.07051287103811436,
+        "probability_1": 0.9294871289618857
+    },
+    {
+        "policy_id": 1,
+        "id": 1572,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.376819529439577e-14,
+        "probability_1": 0.9999999999999662
+    },
+    {
+        "policy_id": 1,
+        "id": 1573,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 0.009649688602745484,
+        "probability_1": 0.9903503113972545
+    },
+    {
+        "policy_id": 1,
+        "id": 1574,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 3.0707013052100618e-09,
+        "probability_1": 0.9999999969292986
+    },
+    {
+        "policy_id": 1,
+        "id": 1581,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1592,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.8198679897999482e-09,
+        "probability_1": 0.9999999981801321
+    },
+    {
+        "policy_id": 1,
+        "id": 1593,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 2.480466775139051e-10,
+        "probability_1": 0.9999999997519534
+    },
+    {
+        "policy_id": 1,
+        "id": 1594,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1595,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1596,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1597,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1598,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1599,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1602,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1603,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 2.6217223378016747e-10,
+        "probability_1": 0.9999999997378278
+    },
+    {
+        "policy_id": 1,
+        "id": 1608,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1609,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    },
+    {
+        "policy_id": 1,
+        "id": 1610,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 5.155994598962994e-09,
+        "probability_1": 0.9999999948440054
+    },
+    {
+        "policy_id": 1,
+        "id": 1614,
+        "language": "en",
+        "predicted_labels": 1,
+        "probability_0": 1.0000002999999933e-14,
+        "probability_1": 0.9999999999999899
+    }
+]
