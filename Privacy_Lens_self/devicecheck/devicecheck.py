@@ -74,7 +74,7 @@ def check_device_in_policy_with_ollama(policy_text, devices_list, model="llama3.
         "STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. Your response must "
         "be a single device category from the list or 'False'."
     )
-
+    
     try:
         # Use Ollama library to interact with the model
         response = ollama.generate(model=model, prompt=prompt)
@@ -110,6 +110,33 @@ def check_device_in_policy_with_ollama3(policy_text, model="llama3.1"):
         print(f"Error: {e}")
         return None
 
+def check_device_in_policy_with_ollama4(policy_text, model="llama3.1"):
+    # Define the prompt for analyzing the policy text
+    prompt = (
+        "You are a precise and logical text analysis assistant. Analyze the following company policy text and determine if "
+        "it **clearly and explicitly mentions the company's own smart device and whether the policy applies to the smart device itself** anywhere in the text. "
+        "Return 'Device: ' followed by the smart device if it is mentioned and covered by the policy, or 'Device: None' if no such device is mentioned or covered. "
+        "Provide no additional output, explanation, or text other than 'Device: ' followed by the smart device or 'None'.\n\n"
+        
+        "Policy Text to Analyze:\n"
+        + policy_text +
+        "\n\n"
+        
+        "Your response should only be:\n"
+        "- 'Device: ' followed by the company's smart device if it is mentioned and covered by the policy text.\n"
+        "- 'Device: None' if the company's smart device is not mentioned or not covered by the policy text.\n\n"
+        
+        "STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. Your response must "
+        "start with 'Device: ' followed by the company's smart device or 'None'."
+    )
+
+    try:
+        # Use Ollama library to interact with the model
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Ensure response is properly stripped to avoid whitespace issues
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 def parse_response3(response):
     try:
@@ -192,7 +219,8 @@ def check_all_devices_in_policy(df, devices_list):
     for index, row in tqdm(df.iterrows(), total=len(df)):
         manufacturer = row['manufacturer']
         policy_text = row['policy_text']
-        response = check_device_in_policy_with_ollama3(policy_text)        
+        response = check_device_in_policy_with_ollama4(policy_text)
+     
         response = response.get('response')
         response = parse_response3(response)
         devicecheck = False
@@ -235,9 +263,14 @@ def combine_df(df1, df2):
     return df
 
 if __name__ == "__main__":
-    df = load_results('devicecheck_wayback.json')
-    df1 = load_results('device_check.json')
-    df = combine_df(df, df1)
-    count = device_count(df)
-    print("The Percentage of policies mentioning a device is: ", (count/len(df))*100, "%")
+    """
+    df = load_results('final_data.json')
+    df = check_all_devices_in_policy(df, device_list)
+    save_results(df, 'device_check.json')
     
+    df1 = load_results('google_play_wayback.json')
+    df1 = check_all_devices_in_policy(df1, device_list)
+    save_results(df1, 'devicecheck_wayback.json')
+    """
+    df = load_results('device_check.json')
+    count = device_count(df)

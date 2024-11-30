@@ -27,7 +27,7 @@ def save_results(results, filename="results.json"):
     
 
 
-def call_ollama_with_library_for_keywords(text, model="llama3.1"):
+def call_ollama_with_library_for_keywords(text, model="llama3.1:70b"):
     # Define the prompt for analyzing the text and counting keywords
     prompt = (
         "You are an advanced text analysis model. Analyze the following text and count the occurrences of keywords including duplicates "
@@ -72,6 +72,133 @@ def call_ollama_with_library_for_keywords(text, model="llama3.1"):
     except Exception as e:
         print(f"Error: {e}")
         return None
+    
+    
+def generate_category_prompt(category_name, keywords, text):
+    prompt = (
+        f"You are an advanced text analysis model. Analyze the following text and count the occurrences of keywords and phrases related to the category '{category_name}', including duplicates. "
+        f"The '{category_name}' category includes terms and concepts such as: {', '.join(keywords)}. "
+        "Include synonyms, variations, and any terms associated with these concepts. "
+        "When analyzing the text, ignore any weird characters, symbols, or words in other languages. "
+        f"Return the count in the format '{category_name}: value'."
+        "\n\n"
+        "Text to Analyze:\n" + text + "\n\n"
+        f"Your only output should be '{category_name}: value. "
+        "Do not include any additional text or explanations. REMEMBER THE VALUE SHOULD BE THE COUNT OF KEYWORDS IN THE TEXT."
+    )
+    return prompt
+
+def count_do_not_track_keywords(text, model="llama3.1"):
+    category_name = "do_not_track"
+    keywords = ["Do Not Track", "DNT"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'do_not_track: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_data_security_keywords(text, model="llama3.1"):
+    category_name = "data_security"
+    keywords = ["data security", "security", "secure", "safety", "protect", "data protection", "information security"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'data_security: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_first_party_collection_keywords(text, model="llama3.1"):
+    category_name = "first_party_collection"
+    keywords = ["first party collection", "collect", "gather", "use", "information"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'first_party_collection: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_third_party_collection_keywords(text, model="llama3.1"):
+    category_name = "third_party_collection"
+    keywords = ["third party collection", "third party", "third parties", "third-party", "share", "sharing"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'third_party_collection: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_opt_out_keywords(text, model="llama3.1"):
+    category_name = "opt_out"
+    keywords = ["optout", "opt-out", "opt out"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'opt_out: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_user_choice_keywords(text, model="llama3.1"):
+    category_name = "user_choice"
+    keywords = ["User Choice", "choice", "control", "revoke", "exercise"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'user_choice: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_data_keywords(text, model="llama3.1"):
+    category_name = "data"
+    keywords = ["Data", "identifier", "name", "email", "address", "phone number", "ip address", "id", "demographic", "gender", "age", "health", "biometric", "activity", "sleep", "geolocation", "location", "GPS", "photo", "friends", "voice", "video", "inference"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'data: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_legislation_keywords(text, model="llama3.1"):
+    category_name = "legislation"
+    keywords = ["legislation", "gdpr", "ccpa", "general data protection regulation", "consumer privacy act"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'legislation: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_access_edit_delete_keywords(text, model="llama3.1"):
+    category_name = "access_edit_delete"
+    keywords = ["Access/Edit/Delete", "access", "edit", "delete", "modify", "revise", "correct", "review", "change", "update"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'access_edit_delete: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def count_policy_change_keywords(text, model="llama3.1"):
+    category_name = "policy_change"
+    keywords = ["policy change", "policy modification", "changes", "modifications", "updates", "change", "update"]
+    prompt = generate_category_prompt(category_name, keywords, text)
+    try:
+        response = ollama.generate(model=model, prompt=prompt)
+        return response  # Response is in the format 'policy_change: value'
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+
 
 def parse_response(response):
     """
@@ -106,7 +233,7 @@ def parse_response(response):
     
     # Regex to extract key-value pairs
     pattern = r'"([\w_]+)":\s*([0-9]+)'
-    matches = re.findall(pattern, response_text)
+    match = re
     metrics = {}
     nigga = False
     if len(matches) != len(categories):
@@ -126,6 +253,42 @@ def parse_response(response):
     
     return metrics
 
+def parses_response(response, text):
+    metrics = {}
+    patterns = {
+        'do_not_track': r'do_not_track:\s*([0-9]+)',
+        'data_security': r'data_security:\s*([0-9]+)',
+        'first_party_collection': r'first_party_collection:\s*([0-9]+)',
+        'third_party_collection': r'third_party_collection:\s*([0-9]+)',
+        'opt_out': r'opt_out:\s*([0-9]+)',
+        'user_choice': r'user_choice:\s*([0-9]+)',
+        'data': r'data:\s*([0-9]+)',
+        'legislation': r'legislation:\s*([0-9]+)',
+        'access_edit_delete': r'access_edit_delete:\s*([0-9]+)',
+        'policy_change': r'policy_change:\s*([0-9]+)'
+    }
+    found = False
+    match = None
+    key = None
+    for keys, pattern in patterns.items():
+        matches = re.search(pattern, response)
+        if matches:
+            match = matches
+            key = keys
+            break  # Exit loop after finding the first match
+                
+    if match:
+        value = match.group(1)
+        try:
+            metrics[key] = int(value)
+        except ValueError:
+            metrics[key] = None
+            logging.warning(f"Invalid value for {key}: {value}")
+    else:
+        logging.warning(f"Nothing found in response.")
+        metrics[key] = None
+    
+    return metrics[key]
         
 
 def analyze_keywords(data):
@@ -152,20 +315,64 @@ def analyze_keywords(data):
                 results.append(result)
 
     return results
-   
+
+
+def analysis(data):
+    results = []
+    # List of category functions and their corresponding keys
+    category_functions = [
+        ('do_not_track', count_do_not_track_keywords),
+        ('data_security', count_data_security_keywords),
+        ('first_party_collection', count_first_party_collection_keywords),
+        ('third_party_collection', count_third_party_collection_keywords),
+        ('opt_out', count_opt_out_keywords),
+        ('user_choice', count_user_choice_keywords),
+        ('data', count_data_keywords),
+        ('legislation', count_legislation_keywords),
+        ('access_edit_delete', count_access_edit_delete_keywords),
+        ('policy_change', count_policy_change_keywords)
+    ]
+    
+    # Wrap data.iterrows() with tqdm for a progress bar
+    for _, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing policies"):
+        policy_text = policy["policy_text"]
+        
+        for category_name, category_function in category_functions:
+            found_category = False
+            count = 0
+            while not found_category:
+                count += 1
+                print(f"Analyzing {category_name} keywords...")
+                found_category = True
+                response = category_function(policy_text)
+                response = parses_response(response.get("response"), policy_text)
+                if response is None:
+                    if count > 10:
+                        logging.warning(f"Failed to analyze {category_name} keywords.")
+                        policy[category_name] = None
+                    else:
+                        found_category = False
+                else:
+                    policy[category_name] = response
+        
+        results.append(policy)
+    updated_data = pd.DataFrame(results)
+    return updated_data
+    
+    
 def average_results(df):
-    for column in df.columns[1:]:
+    for column in df.columns[2:]:
         print(f"Average {column}: {df[column].median()}")
     
 def min_results(df):
-    for column in df.columns[1:]:
+    for column in df.columns[2:]:
         print(f"Minimum {column}: {df[column].min()}")
         
 def max_results(df):
-    for column in df.columns[1:]:
+    for column in df.columns[2:]:
         print(f"Maximum {column}: {df[column].max()}")
 def null_count(df):
-    for column in df.columns[1:]:
+    for column in df.columns[2:]:
         print(f"Null count for {column}: {df[column].isnull().sum()}")  
 
 def combine_df(df1, df2):
@@ -175,13 +382,10 @@ def combine_df(df1, df2):
 
 if __name__ == "__main__":
 
-    df = load_results('Wayback_true.json')
-    df1 = load_results('keyword_analysis_data.json')
+    df = load_results('final_data.json')
+    df = analysis(df)
+    save_results(df, 'keyword_results.json')
     
-    combined_df = combine_df(df, df1)
-    
-    average_results(combined_df)
-    min_results(combined_df)
-    max_results(combined_df)
-    
-    
+    df1 = load_results('google_play_wayback.json')
+    df1 = analysis(df1)
+    save_results(df1, 'keyword_wayback.json')
