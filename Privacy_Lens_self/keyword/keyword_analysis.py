@@ -381,7 +381,7 @@ def combine_df(df1, df2):
 
 
 if __name__ == "__main__":
-
+    """
     df = load_results('final_data.json')
     df = analysis(df)
     save_results(df, 'keyword_results.json')
@@ -389,3 +389,15 @@ if __name__ == "__main__":
     df1 = load_results('google_play_wayback.json')
     df1 = analysis(df1)
     save_results(df1, 'keyword_wayback.json')
+    """
+    print("true DATA")
+    df = load_results('keyword_true.json')
+    average_results(df)
+    min_results(df)
+    max_results(df)
+    
+    print("false DATA")
+    df = load_results('keyword_false.json')
+    average_results(df)
+    min_results(df)
+    max_results(df)

@@ -54,6 +54,7 @@ def call_ollama(policy_text):
         STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. 
         Your response must be in the format of Ambiguity_level:value(1-3). THERE SHOULD BE NO OTHER NUMBERS IN THE RESPONSE
     """
+
     try:
         response = ollama.generate(model="llama3.1", prompt= prompt)
         return response
@@ -64,8 +65,8 @@ def call_ollama(policy_text):
     
     
 def parse_response(response):
-    pattern = r'"Ambiguity_level":\s*([1-3])'
-    match = re.search(r"1|2|3", response)
+    pattern = r'"Ambiguity_level":\s*([1-9])'
+    match = re.search(r"1|2|3|4|5|6|7|8|9", response)
     
     if match:
         try:
@@ -114,11 +115,11 @@ def results(data):
     print(f"Ambiguity Level 3: {count_3}")
    
 if __name__ == "__main__":
-    
+    """
     # Load the data
     data = load_results("final_data.json")
 
-    """
+
     # Analyze the privacy policies
     results = analysis(data)
     
@@ -129,6 +130,10 @@ if __name__ == "__main__":
     results = analysis(data)
     save_results(results, "wayback_results.json")
     """
+
     # Load the results
-    result = load_results("wayback_results.json")
+    result = load_results("ambiguity_true.json")
+    results(result)
+    
+    result = load_results("ambiguity_false.json")
     results(result)

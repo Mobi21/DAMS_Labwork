@@ -587,18 +587,23 @@ if __name__ == "__main__":
     
     
     
-    df = combine_data(df, df1, ['coherence_score', 'unique_words_frequency', 'grammatical_errors'])
-
-    
-    
-
-    df1 = load_results("ambiguity_wayback.json")
-    combined_df = combine_df(df, df1)
-    average_results(combined_df)
-    max_results(combined_df)
-    min_results(combined_df)
+    df = combine_data(df, df1, ['coherence_score', 'unique_words_frequency'])
     """
     
+    
+    print("TRUE DATA")
+    df1 = load_results("readability_true.json")
+
+    average_results(df1)
+    max_results(df1)
+    min_results(df1)
+    
+    print("FALSE DATA")
+    df2 = load_results("readability_false.json")
+
+    average_results(df2)
+    max_results(df2)
+    min_results(df2)
     """
     df = load_results('ambiguity_data.json')
     df1 = load_results('wayback_true_amb.json')
@@ -608,7 +613,10 @@ if __name__ == "__main__":
     min_results(df)
     max_results(df)
     """
+    
+    """
     df = load_results('final_results.json')
     df1 = load_results('ambiguity_wayback.json')
     df = combine_df(df, df1)
     average_results(df)
+    """

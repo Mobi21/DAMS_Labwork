@@ -274,3 +274,5 @@ if __name__ == "__main__":
     """
     df = load_results('device_check.json')
     count = device_count(df)
+    print(f"Number of policies mentioning a device: {count}")
+    print(f"Total number of policies: {len(df)}")
