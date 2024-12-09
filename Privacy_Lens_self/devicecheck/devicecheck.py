@@ -25,90 +25,7 @@ def save_results(results, filename="results.json"):
     df.to_json(filename, orient="records", indent=4)
     
 
-def check_device_in_policy_with_ollama(policy_text, device, model="llama3.1"):
-    # Define the prompt for analyzing the policy text for the specified device
-    prompt = (
-        "You are a precise and logical text analysis assistant. Analyze the following policy text and determine if "
-        "A specified device in the category or the category itself is mentioned anywhere in the text. the wording doesn't need to be exactly the same but it must mention a device or type of device. Return only 'True' if the device is mentioned "
-        "and 'False' if it is not. Provide no additional output, explanation, or text other than 'True' or 'False'.\n\n"
-        
-        "Device Category to check: " + device + "\n\n"
-        
-        "Policy Text to Analyze:\n"
-        + policy_text +
-        "\n\n"
-        
-        "Your response should only be:\n"
-        "- True: if the category or device of the category is mentioned in the policy text.\n"
-        "- False: if the category or device of the category is not mentioned in the policy text.\n\n"
-        
-        "STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. Your response must "
-        "be a single word: either 'True' or 'False'."
-    )
 
-    try:
-        # Use Ollama library to interact with the model
-        response = ollama.generate(model=model, prompt=prompt)
-        return response  # Ensure response is properly stripped to avoid whitespace issues
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-
-def check_device_in_policy_with_ollama(policy_text, devices_list, model="llama3.1"):
-    # Define the prompt for analyzing the policy text for the specified devices
-    prompt = (
-        "You are a precise and logical text analysis assistant. Analyze the following policy text and determine if "
-        "any of the specified device categories are mentioned anywhere in the text. The wording doesn't need to be exactly the same but it must mention a device or type of device corresponding to one of the categories. Return the device category that is mentioned "
-        "or 'False' if none are mentioned. Provide no additional output, explanation, or text other than the device category or 'False'.\n\n"
-        
-        "Device Categories to check: " + ', '.join(devices_list) + "\n\n"
-        
-        "Policy Text to Analyze:\n"
-        + policy_text +
-        "\n\n"
-        
-        "Your response should only be:\n"
-        "- The device category that is mentioned in the policy text.\n"
-        "- False: if none of the device categories are mentioned in the policy text.\n\n"
-        
-        "STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. Your response must "
-        "be a single device category from the list or 'False'."
-    )
-    
-    try:
-        # Use Ollama library to interact with the model
-        response = ollama.generate(model=model, prompt=prompt)
-        return response # Ensure response is properly stripped to avoid whitespace issues
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-def check_device_in_policy_with_ollama3(policy_text, model="llama3.1"):
-    # Define the prompt for analyzing the policy text
-    prompt = (
-        "You are a precise and logical text analysis assistant. Analyze the following company policy text and determine if "
-        "it **clearly and explicitly mentions and references any smart devices** anywhere in the text. "
-        "Return 'Device: ' followed by the smart device that is mentioned, or 'Device: None' if no such device is mentioned. "
-        "Provide no additional output, explanation, or text other than 'Device: ' followed by the smart device mentioned or 'None'.\n\n"
-        
-        "Policy Text to Analyze:\n"
-        + policy_text +
-        "\n\n"
-        
-        "Your response should only be:\n"
-        "- 'Device: ' followed by the smart device that is mentioned in the policy text.\n"
-        "- 'Device: None' if no smart devices are mentioned in the policy text.\n\n"
-        
-        "STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. Your response must "
-        "start with 'Device: ' followed by the smart device mentioned or 'None'."
-    )
-
-    try:
-        # Use Ollama library to interact with the model
-        response = ollama.generate(model=model, prompt=prompt)
-        return response  # Ensure response is properly stripped to avoid whitespace issues
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
 
 def check_device_in_policy_with_ollama4(policy_text, model="llama3.1"):
     # Define the prompt for analyzing the policy text
@@ -134,6 +51,65 @@ def check_device_in_policy_with_ollama4(policy_text, model="llama3.1"):
         # Use Ollama library to interact with the model
         response = ollama.generate(model=model, prompt=prompt)
         return response  # Ensure response is properly stripped to avoid whitespace issues
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+def check_device_in_policy_with_ollama5(policy_text, model="llama3.1"):
+    # Define the comprehensive and detailed prompt for analyzing the policy text
+    prompt = """
+    You are a highly skilled text analysis assistant specializing in legal and policy documents. Your task is to analyze the provided company policy text and determine whether it **explicitly mentions any smart device manufactured by the company and if the policy explicitly applies to that device.**
+    
+    ### Evaluation Criteria
+    To determine whether the policy explicitly mentions a smart device, follow these detailed steps:
+    
+    #### 1. **Explicit Mention of a Smart Device**
+    - A device is explicitly mentioned if the text specifically names a smart device category or product manufactured by the company (e.g., "Smart Speaker," "Smart Camera").
+    - Vague references such as "our devices" or "connected products" without specific naming are not considered explicit.
+    - **Examples of Explicit Mentions:**
+      - "Our privacy policy applies to Smart Cameras and Smart Speakers."
+      - "This policy covers the Smart Thermostat and other home automation devices."
+
+    #### 2. **Application of Policy to the Device**
+    - The policy must clearly state that it applies to the named device(s). This may include statements like:
+      - "Data collected from our Smart Thermostat is governed by this policy."
+      - "This privacy policy applies to all Smart Doorbells manufactured by our company."
+    - Ambiguous or implied applications, such as "applies to all our products," are not sufficient without further clarification.
+
+    #### 3. **Exclusions**
+    - If the policy mentions a smart device but does not explicitly state that it is covered, it should not be marked as covered.
+    - Examples of exclusions:
+      - "Smart Lights may collect data, but they are not covered by this policy."
+      - "We offer various connected products, but this policy does not govern their use."
+
+    ### Response Requirements
+    - If the policy explicitly mentions and applies to a smart device, return:
+      ```
+      Device: [Smart Device Name]
+      ```
+      (e.g., "Device: Smart Speaker")
+    - If the policy does not mention or does not explicitly apply to any smart device, return:
+      ```
+      Device: None
+      ```
+
+    ### Policy Text to Analyze
+    {policy_text}
+
+    ### Strict Output Instructions
+    - **Do not provide any commentary, explanation, or additional information.**
+    - Your response must only consist of:
+      - `Device: [Smart Device Name]` (if a specific device is mentioned and covered).
+      - `Device: None` (if no device is mentioned or covered).
+    - Responses that deviate from this format will be invalid.
+
+    ### Important Notes
+    - If the policy contains multiple devices, return only the first one explicitly mentioned and covered.
+    - Base your evaluation solely on the text provided, adhering to the criteria above.
+    """
+    try:
+        # Use Ollama library to interact with the model
+        response = ollama.generate(model=model, prompt=prompt)
+        return response
     except Exception as e:
         print(f"Error: {e}")
         return None
@@ -219,7 +195,7 @@ def check_all_devices_in_policy(df, devices_list):
     for index, row in tqdm(df.iterrows(), total=len(df)):
         manufacturer = row['manufacturer']
         policy_text = row['policy_text']
-        response = check_device_in_policy_with_ollama4(policy_text)
+        response = check_device_in_policy_with_ollama5(policy_text)
      
         response = response.get('response')
         response = parse_response3(response)

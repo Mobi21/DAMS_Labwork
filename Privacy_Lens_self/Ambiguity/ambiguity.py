@@ -62,11 +62,95 @@ def call_ollama(policy_text):
         print(f"Error: {e}")
         return None
     
-    
+def call_ollama1(policy_text):
+    prompt = """
+    You are an expert in legal and policy analysis with a specialization in evaluating the clarity and transparency of privacy policies. 
+    Your task is to analyze the full privacy policy text provided and assign an ambiguity level based on the rubric below. 
+    The evaluation is based on how understandable, specific, and transparent the privacy policy is for users. Follow the instructions rigorously.
+
+    ### Grading Rubric for Privacy Policy Ambiguity
+    The privacy policy will be classified into one of three categories, with corresponding numeric levels:
+
+    #### **1. NOT AMBIGUOUS**
+    - The text is clear, explicit, and transparent throughout.
+    - It uses well-defined terms, avoids vague language, and provides exhaustive descriptions of processes, rights, and responsibilities.
+    - It explains:
+        - **What data is collected** (e.g., personal information, cookies, IP addresses).
+        - **How data is used** (e.g., for providing services, analytics, or advertising).
+        - **Who data is shared with** (e.g., specific categories like vendors or partners).
+        - **User rights** (e.g., deletion, access, correction).
+        - **Data retention policies** (e.g., retention periods and reasons for keeping data).
+    - **Examples**:
+        - "We will only use your email address to send order confirmations and updates. Your email will not be shared with third parties."
+        - "We retain your data for 30 days after account closure, unless legally required to keep it longer."
+        - "You can access or delete your data by emailing privacy@company.com."
+    - **Criteria**:
+        - No room for interpretation or multiple meanings.
+        - Every section is specific, complete, and easy to understand.
+
+    #### **2. SOMEWHAT AMBIGUOUS**
+    - The text provides some clarity but includes sections that could be interpreted in more than one way or use imprecise language.
+    - The scope of terms or actions may lack full precision, and details may be incomplete or implied.
+    - Examples:
+        - "We may share your data with trusted partners to enhance your experience."
+        - "We store data as long as it is necessary to provide services."
+        - "Our vendors comply with applicable privacy laws."
+    - **Criteria**:
+        - Partial explanations of key practices.
+        - Use of vague terms (e.g., "may," "necessary," "trusted partners").
+        - Some clarity in certain sections, but ambiguity remains in others.
+
+    #### **3. AMBIGUOUS**
+    - The text is vague, unclear, or lacks specificity, leaving significant room for interpretation.
+    - The policy fails to adequately explain key details such as:
+        - What data is collected.
+        - How data is used or shared.
+        - User rights or data retention policies.
+    - Frequent use of generic terms or legalese, making the policy difficult to understand.
+    - **Examples**:
+        - "Your data will be used for purposes deemed appropriate by the company."
+        - "We follow applicable laws to protect your data."
+        - "Information may be retained as needed."
+    - **Criteria**:
+        - Heavy reliance on ambiguous terms or phrases.
+        - Key details are missing or obscured.
+        - Little to no explanation of user rights or specific practices.
+
+    ### Evaluation Instructions
+    1. Carefully read the **entire privacy policy** provided.
+    2. Analyze the policy as a whole based on the rubric:
+        - Does the policy explicitly address all critical areas (data collection, use, sharing, rights, retention)?
+        - Are vague terms clarified or defined (e.g., "trusted partners")?
+        - Is the text clear and complete, or does it leave room for multiple interpretations?
+    3. Assign an **overall numeric level of ambiguity** based on the most ambiguous portions of the policy:
+        - **1** = NOT AMBIGUOUS
+        - **2** = SOMEWHAT AMBIGUOUS
+        - **3** = AMBIGUOUS
+
+    ### Response Format
+    Respond in the exact format below:
+    ```
+    Ambiguity_level:[1 | 2 | 3]
+    ```
+
+    ### Privacy Policy Text to Analyze
+    {policy_text}
+
+    ### Important Notes
+    - Base your evaluation solely on the rubric above.
+    - Do not include any commentary, explanation, or additional text in your response.
+    - Ensure strict adherence to the response format, using only the specified levels (1, 2, or 3).
+    """
+    try:
+        response = ollama.generate(model="llama3.1", prompt=prompt)
+        return response
+    except Exception as e:
+        print(f"Error: {e}")
+        return None  
     
 def parse_response(response):
-    pattern = r'"Ambiguity_level":\s*([1-9])'
-    match = re.search(r"1|2|3|4|5|6|7|8|9", response)
+    pattern = r'"Ambiguity_level":\s*([1-3])'
+    match = re.search(r"1|2|3", response)
     
     if match:
         try:
@@ -86,7 +170,7 @@ def analysis(data):
         found_ambiguity = False
         while not found_ambiguity:
             found_ambiguity = True
-            response = call_ollama(policy_text)
+            response = call_ollama1(policy_text)
             response = parse_response(response.get("response"))
             if response is None:
                 found_ambiguity = False
