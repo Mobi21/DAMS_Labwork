@@ -243,7 +243,7 @@ if __name__ == "__main__":
     df = load_results('final_data.json')
     df = check_all_devices_in_policy(df, device_list)
     save_results(df, 'device_check.json')
-    
+    """
     df1 = load_results('google_play_wayback.json')
     df1 = check_all_devices_in_policy(df1, device_list)
     save_results(df1, 'devicecheck_wayback.json')
@@ -252,3 +252,4 @@ if __name__ == "__main__":
     count = device_count(df)
     print(f"Number of policies mentioning a device: {count}")
     print(f"Total number of policies: {len(df)}")
+    """

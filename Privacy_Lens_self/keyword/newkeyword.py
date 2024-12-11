@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import logging
 from tqdm import tqdm
+import re
 import ollama  # Ensure Ollama is properly installed and configured
 
 # Load and save functions
@@ -14,7 +15,7 @@ def save_results(results, filename="results.json"):
     results.to_json(filename, orient="records", indent=4)
 
 # Keyword extraction function
-def call_ollama_with_library_for_keywords(text, category, category_description, model="llama3.1:70b"):
+def call_ollama_with_library_for_keywords(text, category, category_description, model="llama3.1"):
     prompt = f"""
     You are a highly skilled text analysis assistant specializing in extracting specific keywords from provided text.
     Your task is to identify all occurrences of keywords related to a single category and return them as a list.
@@ -53,16 +54,22 @@ def call_ollama_with_library_for_keywords(text, category, category_description, 
         return None
 
 # Parsing function for Ollama response
-def parse_keywords_response(response):
+def parse_keywords_from_text(text):
+    """
+    Extract the text within square brackets [ ] and inside double quotes " " in a given string.
+    
+    Parameters:
+        text (str): The string to parse.
+        
+    Returns:
+        list: A list of strings found within the square brackets and double quotes.
+    """
     try:
-        if isinstance(response, dict):
-            response_text = response.get("response", "")
-        else:
-            response_text = response.strip()
-        # Ensure the response is a JSON array
-        return json.loads(response_text)
-    except (json.JSONDecodeError, TypeError):
-        logging.error("Failed to parse Ollama response as JSON.")
+        # Regular expression to match strings inside double quotes within square brackets
+        matches = re.findall(r'"(.*?)"', text)
+        return len(matches)
+    except Exception as e:
+        logging.error(f"Error while parsing text: {e}")
         return []
 
 # Data collection function
@@ -75,10 +82,10 @@ def collect_keyword_data(data, categories):
             keywords = []
             valid = False
             retries = 0
-            while not valid and retries < 10:
+            while not valid and retries < 5:
                 retries += 1
                 response = call_ollama_with_library_for_keywords(policy_text, category, description)
-                keywords = parse_keywords_response(response)
+                keywords = parse_keywords_from_text(response.get("response"))
                 if keywords is not None:
                     valid = True
             if keywords is None:
@@ -117,10 +124,13 @@ if __name__ == "__main__":
         "policy_change": "Keywords about modifications, updates, or changes to privacy policies."
     }
 
-    # Example workflow
-    df = load_results("final_data.json")
-    results = collect_keyword_data(df, categories)
-    save_results(results, "keyword_results.json")
+
 
     # Summarize results
-    keyword_summary(results)
+    df = load_results('final_data.json')
+    df = collect_keyword_data(df, categories)
+    save_results(df, 'keyword_results.json')
+    
+    df1 = load_results('google_play_wayback.json')
+    df1 = collect_keyword_data(df1, categories)
+    save_results(df1, 'keyword_wayback.json')

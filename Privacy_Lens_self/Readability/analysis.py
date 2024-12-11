@@ -13,7 +13,7 @@ def load_data():
     return data
 
 def call_ollama_with_library(prompt, prompt_helper2=""):
-    model = "llama3.1:70b"
+    model = "llama3.1"
     prompt_helper = (
         "\n YOUR ONLY OUTPUT SHOULD BE HE RESULT. DONT TELL ME HOW TO DO IT MYSELF OR GIVE ME A CODE ON HOW TO DO IT. give me my desired output that is all. Remember to use the correct name for the output name"
     )
@@ -55,7 +55,6 @@ def get_coherence_score(policy_text):
     """
     return call_ollama_with_library(prompt)
 
-
 def get_imprecise_words_frequency(policy_text):
     prompt = f"""
     You are a highly skilled text analysis assistant with expertise in identifying imprecise language in privacy policies. Your task is to calculate the frequency of imprecise words within the provided text. 
@@ -85,7 +84,6 @@ def get_imprecise_words_frequency(policy_text):
     ```
     """
     return call_ollama_with_library(prompt)
-
 
 def get_connective_words_frequency(policy_text):
     prompt = f"""
@@ -117,7 +115,6 @@ def get_connective_words_frequency(policy_text):
     """
     return call_ollama_with_library(prompt)
 
-
 def get_reading_complexity(policy_text):
     prompt = f"""
     You are a highly skilled text analysis assistant with expertise in assessing readability metrics. Your task is to calculate the reading complexity of the provided privacy policy text using the Flesch-Kincaid Grade Level (FKGL). 
@@ -147,7 +144,6 @@ def get_reading_complexity(policy_text):
     """
     return call_ollama_with_library(prompt)
 
-
 def get_reading_time(policy_text):
     prompt = f"""
     You are a highly skilled text analysis assistant with expertise in estimating reading times. Your task is to calculate the approximate reading time of the provided privacy policy text in minutes. 
@@ -175,7 +171,6 @@ def get_reading_time(policy_text):
     ```
     """
     return call_ollama_with_library(prompt)
-
 
 def get_entropy(policy_text):
     prompt = f"""
@@ -205,7 +200,6 @@ def get_entropy(policy_text):
     ```
     """
     return call_ollama_with_library(prompt)
-
 
 def get_unique_words_frequency(policy_text):
     prompt = f"""
@@ -237,7 +231,6 @@ def get_unique_words_frequency(policy_text):
     """
     return call_ollama_with_library(prompt)
 
-
 def get_grammatical_errors(policy_text):
     prompt = f"""
     You are a highly skilled text analysis assistant with expertise in grammar analysis. Your task is to calculate the frequency of grammatical errors in the provided privacy policy text. 
@@ -267,130 +260,114 @@ def get_grammatical_errors(policy_text):
     """
     return call_ollama_with_library(prompt)
 
-
-"""
-def analysis(data):
-    results = []
-    # Wrap data.iterrows() with tqdm for a progress bar
-    for _, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing policies"):
-        valid = False
-        while(valid == False):
-            valid = True
-            policy_text = policy["policy_text"]
-            result = {
-                "coherence_score": get_coherence_score(policy_text),
-                "imprecise_words_frequency": get_imprecise_words_frequency(policy_text),
-                "connective_words_frequency": get_connective_words_frequency(policy_text),
-                "reading_complexity": get_reading_complexity(policy_text),
-                "reading_time": get_reading_time(policy_text),
-                "entropy": get_entropy(policy_text),
-                "unique_words_frequency": get_unique_words_frequency(policy_text),
-                "grammatical_errors": get_grammatical_errors(policy_text),
-            }
-            policy["coherence_score"] = parse_response(result["coherence_score"].get('response'), policy_text)
-            policy["imprecise_words_frequency"] = parse_response(result["imprecise_words_frequency"].get('response'), policy_text)
-            policy["connective_words_frequency"] = parse_response(result["connective_words_frequency"].get('response'), policy_text)
-            policy["reading_complexity"] = parse_response(result["reading_complexity"].get('response'), policy_text)
-            policy["reading_time"] = parse_response(result["reading_time"].get('response'), policy_text)
-            policy["entropy"] = parse_response(result["entropy"].get('response'), policy_text)
-            policy["unique_words_frequency"] = parse_response(result["unique_words_frequency"].get('response'), policy_text)
-            policy["grammatical_errors"] = parse_response(result["grammatical_errors"].get('response'), policy_text)
-            
-            if None in result.values():
-                valid = False
-            else:
-                results.append(policy)
-    
-    updated_data = pd.DataFrame(results)
-    return updated_data
-"""
 def analysis(data):
     results = []
     # Wrap data.iterrows() with tqdm for a progress bar
     for _, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing policies"):
         policy_text = policy["policy_text"]
-        
+
         found_coherence_score = False
+        coherence_score_count = 0
         while not found_coherence_score:
-            found_coherence_score = True
+            coherence_score_count += 1
             response = get_coherence_score(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and coherence_score_count < 7:
                 found_coherence_score = False
             else:
                 policy["coherence_score"] = response
-                
+                found_coherence_score = True
+
         found_imprecise_words_frequency = False
+        imprecise_words_frequency_count = 0
         while not found_imprecise_words_frequency:
-            found_imprecise_words_frequency = True
+            imprecise_words_frequency_count += 1
             response = get_imprecise_words_frequency(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and imprecise_words_frequency_count < 7:
                 found_imprecise_words_frequency = False
             else:
+
                 policy["imprecise_words_frequency"] = response
-                
+                found_imprecise_words_frequency = True
+
         found_connective_words_frequency = False
+        connective_words_frequency_count = 0
         while not found_connective_words_frequency:
-            found_connective_words_frequency = True
+            connective_words_frequency_count += 1
             response = get_connective_words_frequency(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and connective_words_frequency_count < 7:
                 found_connective_words_frequency = False
             else:
+
                 policy["connective_words_frequency"] = response
-                
+                found_connective_words_frequency = True
+
         found_reading_complexity = False
+        reading_complexity_count = 0
         while not found_reading_complexity:
-            found_reading_complexity = True
+            reading_complexity_count += 1
             response = get_reading_complexity(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and reading_complexity_count < 7:
                 found_reading_complexity = False
             else:
+
                 policy["reading_complexity"] = response
-        
+                found_reading_complexity = True
+
         found_reading_time = False
+        reading_time_count = 0
         while not found_reading_time:
-            found_reading_time = True
+            reading_time_count += 1
             response = get_reading_time(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and reading_time_count < 7:
                 found_reading_time = False
             else:
+
                 policy["reading_time"] = response
-                
+                found_reading_time = True
+
         found_entropy = False
+        entropy_count = 0
         while not found_entropy:
-            found_entropy = True
+            entropy_count += 1
             response = get_entropy(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and entropy_count < 7:
                 found_entropy = False
             else:
+
                 policy["entropy"] = response
-                
+                found_entropy = True
+
         found_unique_words_frequency = False
+        unique_words_frequency_count = 0
         while not found_unique_words_frequency:
-            found_unique_words_frequency = True
+            unique_words_frequency_count += 1
             response = get_unique_words_frequency(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and unique_words_frequency_count < 7:
                 found_unique_words_frequency = False
             else:
+
                 policy["unique_words_frequency"] = response
-                
+                found_unique_words_frequency = True
+
         found_grammatical_errors = False
+        grammatical_errors_count = 0
         while not found_grammatical_errors:
-            found_grammatical_errors = True
+            grammatical_errors_count += 1
             response = get_grammatical_errors(policy_text)
             response = parse_response(response.get('response'), policy_text)
-            if response is None:
+            if response is None and grammatical_errors_count < 7:
                 found_grammatical_errors = False
             else:
-                policy["grammatical_errors"] = response
-                
 
+                policy["grammatical_errors"] = response
+                found_grammatical_errors = True
 
         results.append(policy)
     updated_data = pd.DataFrame(results)
@@ -400,51 +377,19 @@ def selective_analysis(data):
     results = []
     for _, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing policies"):
         policy_text = policy["policy_text"]
-        """        
-        found_coherence_score = False
-        while not found_coherence_score:
-            found_coherence_score = True
-            response = get_coherence_score(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None:
-                found_coherence_score = False
-            else:
-                policy["coherence_score"] = response
-                
-
-        found_reading_time = False
-        while not found_reading_time:
-            found_reading_time = True
-            response = get_reading_time(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None:
-                found_reading_time = False
-            else:
-                policy["reading_time"] = response
-                
-        found_unique_words_frequency = False
-        while not found_unique_words_frequency:
-            found_unique_words_frequency = True
-            response = get_unique_words_frequency(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None:
-                found_unique_words_frequency = False
-            else:
-                policy["unique_words_frequency"] = response
-            """    
+        runcount = 0    
         found_grammatical_errors = False
         while not found_grammatical_errors:
+            runcount += 1
             found_grammatical_errors = True
             response = get_grammatical_errors(policy_text)
             response = parse_response(response.get('response'), policy_text)
             if response is None:
-                found_grammatical_errors = False
+                if runcount < 5:
+                    found_grammatical_errors = False
             else:
                 policy["grammatical_errors"] = response
                 
-                
-
-
         results.append(policy)
     updated_data = pd.DataFrame(results)
     return updated_data
@@ -473,7 +418,6 @@ def parse_response(response, text):
             match = matches
             key = keys
             
-            
     if match:
         found += 1
         value = match.group(1)
@@ -488,7 +432,7 @@ def parse_response(response, text):
                 metrics['entropy'] = float(value)
             except ValueError:
                 metrics['entropy'] = None
-                logging.warning(f"Invalid grammatical_errors value: {value}")
+                logging.warning(f"Invalid entropy value: {value}")
         elif key == 'reading_complexity':
             try:
                 metrics['reading_complexity'] = float(value)
@@ -525,13 +469,12 @@ def parse_response(response, text):
             except ValueError:
                 metrics['unique_words_frequency'] = None
                 logging.warning(f"Invalid unique_words_frequency value: {value}")
-                
         else:
             try:
                 value = "[" + value.strip(", ").strip("[]") + "]"  # Wrap in brackets
                 metrics[key] = json.loads(value)
                 print(len(metrics[key]))
-                metrics[key] = int(len(metrics[key]))/ word_count(text)
+                metrics[key] = int(len(metrics[key])) / word_count(text)
             except json.JSONDecodeError:
                 metrics[key] = None
                 logging.warning(f"Invalid list value for {key}: {value}")
@@ -539,21 +482,34 @@ def parse_response(response, text):
         logging.warning(f"Nothing found in response.")
         metrics[key] = None
     
-    return metrics[key]
+    return metrics.get(key)
 
 def word_count(text):
     return len(text.split())
+
 def load_results(filename="data.json"):
     with open(filename, encoding='utf-8') as file:
         data = json.load(file)
     df = pd.DataFrame(data)
     if filename == "results.json":
-        df=df[['manufacturer', 'response']]
+        df = df[['manufacturer', 'response']]
 
     return df
 
 def change_columns_names(df):
-    df = df.rename(columns={"url": "manufacturer", "Coherance Score": "coherence_score", "Imprecise Words": "imprecise_words_frequency", "Connective Words": "connective_words_frequency", "flesch_kincaid_grade_level": "reading_complexity", "Reading_Time (Min)": "reading_time_minutes", "Entropy": "entropy", "Unique_words": "unique_words_frequency", "correct_grammar_frequency": "grammatical_errors"})
+    df = df.rename(columns={
+        "url": "manufacturer", 
+        "Coherance Score": "coherence_score", 
+        "Imprecise Words": "imprecise_words_frequency", 
+        "Connective Words": "connective_words_frequency", 
+        "flesch_kincaid_grade_level": "reading_complexity", 
+        "Reading_Time (Min)": "reading_time_minutes", 
+        "Entropy": "entropy", 
+        "Unique_words": "unique_words_frequency", 
+        "correct_grammar_frequency": "grammatical_errors",
+        "Reading_Time (Min)": "reading_time", 
+        "Unique Words": "unique_words_frequency"
+    })
     return df
 
 def average_results(df):
@@ -565,148 +521,117 @@ def average_results(df):
     connective_average = df['connective_words_frequency'].median()
     complexity_average = df['reading_complexity'].median()
     time_average = df['reading_time'].median()
-    def average_results(df):
-        avg_results = {}
-        
-        coherence_average = df['coherence_score'].median()
-        imprecise_average = df['imprecise_words_frequency'].median()
-        connective_average = df['connective_words_frequency'].median()
-        complexity_average = df['reading_complexity'].median()
-        time_average = df['reading_time'].median()
-        entropy_average = df['entropy'].median()
-        unique_average = df['unique_words_frequency'].median()
-        grammatical_average = df['grammatical_errors'].median()
-        
-        avg_results['coherence_score'] = float(coherence_average)
-        avg_results['imprecise_words_frequency'] = float(imprecise_average)
-        avg_results['connective_words_frequency'] = float(connective_average)
-        avg_results['reading_complexity'] = float(complexity_average)
-        avg_results['reading_time'] = float(time_average)
-        avg_results['entropy'] = float(entropy_average)
-        avg_results['unique_words_frequency'] = float(unique_average)
-        avg_results['grammatical_errors'] = float(grammatical_average)
-        
-        print("Average Results:")  
-        display_average_results(avg_results)
-        
-    def max_results(df):
-        max_results = {}
-        
-        coherence_max = df['coherence_score'].max()
-        imprecise_max = df['imprecise_words_frequency'].max()
-        connective_max = df['connective_words_frequency'].max()
-        complexity_max = df['reading_complexity'].max()
-        time_max = df['reading_time'].max()
-        entropy_max = df['entropy'].max()
-        unique_max = df['unique_words_frequency'].max()
-        grammatical_max = df['grammatical_errors'].max()
-        
-        max_results['coherence_score'] = float(coherence_max)
-        max_results['imprecise_words_frequency'] = float(imprecise_max)
-        max_results['connective_words_frequency'] = float(connective_max)
-        max_results['reading_complexity'] = float(complexity_max)
-        max_results['reading_time'] = float(time_max)
-        max_results['entropy'] = float(entropy_max)
-        max_results['unique_words_frequency'] = float(unique_max)
-        max_results['grammatical_errors'] = float(grammatical_max)
-        
-        print("Max Results:")
-        display_max_results(max_results)
+    entropy_average = df['entropy'].median()
+    unique_average = df['unique_words_frequency'].median()
+    grammatical_average = df['grammatical_errors'].median()
+    
+    avg_results['coherence_score'] = float(coherence_average)
+    avg_results['imprecise_words_frequency'] = float(imprecise_average)
+    avg_results['connective_words_frequency'] = float(connective_average)
+    avg_results['reading_complexity'] = float(complexity_average)
+    avg_results['reading_time'] = float(time_average)
+    avg_results['entropy'] = float(entropy_average)
+    avg_results['unique_words_frequency'] = float(unique_average)
+    avg_results['grammatical_errors'] = float(grammatical_average)
+    
+    print("Average Results:")  
+    display_average_results(avg_results)
+    
+def max_results(df):
+    max_results = {}
+    
+    coherence_max = df['coherence_score'].max()
+    imprecise_max = df['imprecise_words_frequency'].max()
+    connective_max = df['connective_words_frequency'].max()
+    complexity_max = df['reading_complexity'].max()
+    time_max = df['reading_time'].max()
+    entropy_max = df['entropy'].max()
+    unique_max = df['unique_words_frequency'].max()
+    grammatical_max = df['grammatical_errors'].max()
+    
+    max_results['coherence_score'] = float(coherence_max)
+    max_results['imprecise_words_frequency'] = float(imprecise_max)
+    max_results['connective_words_frequency'] = float(connective_max)
+    max_results['reading_complexity'] = float(complexity_max)
+    max_results['reading_time'] = float(time_max)
+    max_results['entropy'] = float(entropy_max)
+    max_results['unique_words_frequency'] = float(unique_max)
+    max_results['grammatical_errors'] = float(grammatical_max)
+    
+    print("Max Results:")
+    display_max_results(max_results)
 
-    def min_results(df):
-        min_results = {}
-        
-        coherence_min = df['coherence_score'].min()
-        imprecise_min = df['imprecise_words_frequency'].min()
-        connective_min = df['connective_words_frequency'].min()
-        complexity_min = df['reading_complexity'].min()
-        time_min = df['reading_time'].min()
-        entropy_min = df['entropy'].min()
-        unique_min = df['unique_words_frequency'].min()
-        grammatical_min = df['grammatical_errors'].min()
-        
-        min_results['coherence_score'] = float(coherence_min)
-        min_results['imprecise_words_frequency'] = float(imprecise_min)
-        min_results['connective_words_frequency'] = float(connective_min)
-        min_results['reading_complexity'] = float(complexity_min)
-        min_results['reading_time'] = float(time_min)
-        min_results['entropy'] = float(entropy_min)
-        min_results['unique_words_frequency'] = float(unique_min)
-        min_results['grammatical_errors'] = float(grammatical_min)
-        
-        print("Min Results:")    
-        display_min_results(min_results)
+def min_results(df):
+    min_results = {}
+    
+    coherence_min = df['coherence_score'].min()
+    imprecise_min = df['imprecise_words_frequency'].min()
+    connective_min = df['connective_words_frequency'].min()
+    complexity_min = df['reading_complexity'].min()
+    time_min = df['reading_time'].min()
+    entropy_min = df['entropy'].min()
+    unique_min = df['unique_words_frequency'].min()
+    grammatical_min = df['grammatical_errors'].min()
+    
+    min_results['coherence_score'] = float(coherence_min)
+    min_results['imprecise_words_frequency'] = float(imprecise_min)
+    min_results['connective_words_frequency'] = float(connective_min)
+    min_results['reading_complexity'] = float(complexity_min)
+    min_results['reading_time'] = float(time_min)
+    min_results['entropy'] = float(entropy_min)
+    min_results['unique_words_frequency'] = float(unique_min)
+    min_results['grammatical_errors'] = float(grammatical_min)
+    
+    print("Min Results:")    
+    display_min_results(min_results)
 
-    def display_average_results(avg_results):
-        print()
-        for key, value in avg_results.items():
-            print(f"{key}: {value}")
+def display_average_results(avg_results):
+    print()
+    for key, value in avg_results.items():
+        print(f"{key}: {value}")
 
+def display_max_results(max_results):
+    print()
+    for key, value in max_results.items():
+        print(f"{key}: {value}")
         
-    def display_max_results(max_results):
-        print()
-        for key, value in max_results.items():
-            print(f"{key}: {value}")
-            
-    def display_min_results(min_results):
-        print()
-        for key, value in min_results.items():
-            print(f"{key}: {value}")
-            
-    def change_data(main_data, new_data, change_columns):
-        for column in change_columns:
-            main_data[column] = new_data[column]
-        return main_data
-
-    def change_columns_names(df):
-        df = df.rename(columns={"url": "manufacturer", "Coherance Score": "coherence_score", "Imprecise Words": "imprecise_words_frequency", "Connective Words": "connective_words_frequency", "flesch_kincaid_grade_level": "reading_complexity", "Reading_Time (Min)": "reading_time_minutes", "Entropy": "entropy", "Unique_words": "unique_words_frequency", "correct_grammar_frequency": "grammatical_errors", "Reading_Time (Min)": "reading_time", "Unique Words": "unique_words_frequency"})
-        return df
-
-    def combine_data(df, df1, columnsss):
-        for column in columnsss:
-            df[column] = df1[column]
-        return df
-
-    def combine_df(df1, df2):
-        df = pd.concat([df1, df2])
-        return df
-
-    if __name__ == "__main__":
-        """
-        df1 = load_results("ambiguity_data.json")
-        df1 = change_columns_names(df1)
+def display_min_results(min_results):
+    print()
+    for key, value in min_results.items():
+        print(f"{key}: {value}")
         
-        df = load_results("final_results.json")
-        df = change_columns_names(df)
+def change_data(main_data, new_data, change_columns):
+    for column in change_columns:
+        main_data[column] = new_data[column]
+    return main_data
 
-        df = combine_data(df, df1, ['coherence_score', 'unique_words_frequency'])
-        """
-        
-        print("TRUE DATA")
-        df1 = load_results("readability_true.json")
-        average_results(df1)
-        max_results(df1)
-        min_results(df1)
-        
-        print("FALSE DATA")
-        df2 = load_results("readability_false.json")
-        average_results(df2)
-        max_results(df2)
-        min_results(df2)
-        
-        """
-        df = load_results('ambiguity_data.json')
-        df1 = load_results('wayback_true_amb.json')
-        df = combine_df(df, df1)
-        df = change_columns_names(df)
-        average_results(df)
-        min_results(df)
-        max_results(df)
-        """
-        
-        """
-        df = load_results('final_results.json')
-        df1 = load_results('ambiguity_wayback.json')
-        df = combine_df(df, df1)
-        average_results(df)        """
+def combine_data(df, df1, columns):
+    for column in columns:
+        df[column] = df1[column]
+    return df
 
+def combine_df(df1, df2):
+    df = pd.concat([df1, df2])
+    return df
+
+if __name__ == "__main__":
+    df = load_results('final_data.json')
+    df = analysis(df)
+    save_results(df, 'readability_results.json')
+    
+    df1 = load_results('google_play_wayback.json')
+    df1 = analysis(df1)
+    save_results(df1, 'readability_wayback.json')
+    """
+    print("TRUE DATA")
+    df1 = load_results("readability_true.json")
+    average_results(df1)
+    max_results(df1)
+    min_results(df1)
+    
+    print("FALSE DATA")
+    df2 = load_results("readability_false.json")
+    average_results(df2)
+    max_results(df2)
+    min_results(df2)
+    """

@@ -199,7 +199,7 @@ def results(data):
     print(f"Ambiguity Level 3: {count_3}")
    
 if __name__ == "__main__":
-    """
+   
     # Load the data
     data = load_results("final_data.json")
 
@@ -213,11 +213,12 @@ if __name__ == "__main__":
     data = load_results("google_play_wayback.json")
     results = analysis(data)
     save_results(results, "wayback_results.json")
-    """
 
+"""
     # Load the results
     result = load_results("ambiguity_true.json")
     results(result)
     
     result = load_results("ambiguity_false.json")
     results(result)
+    """
