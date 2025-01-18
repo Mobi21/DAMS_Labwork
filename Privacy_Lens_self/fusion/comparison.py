@@ -49,19 +49,19 @@ def split_dataset(dataset1, dataset2, device_check_col="DeviceCheck"):
     return dataset2_true, dataset2_false
 
 if __name__ == "__main__":
-    df1 = load_data("final_results.json")
+    df1 = load_data("final_data.json")
 
-    df2 = load_data("ambiguity_wayback.json", True)
+    df2 = load_data("google_play_wayback.json", True)
     
-    device_check = load_data("device_check.json")
+    #device_check = load_data("device_check.json")
     df2["manufacturer"] = df2["manufacturer"].astype(str) + "_wayback"
     
     final_df = combine_data(df1, df2)
     
-    device_true, device_false = split_dataset(device_check, final_df)
+    #device_true, device_false = split_dataset(device_check, final_df)
     
-    device_true.to_json("readability_true.json", orient="records", indent=4)
-    device_false.to_json("readability_false.json", orient="records", indent=4)
-
+    #device_true.to_json("readability_true.json", orient="records", indent=4)
+    #device_false.to_json("readability_false.json", orient="records", indent=4)
+    final_df.to_json("all_policies.json", orient="records", indent=4)
 
 # %%
