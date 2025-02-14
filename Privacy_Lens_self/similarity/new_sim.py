@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Hypothetical Ollama Python interface
 import ollama  
@@ -43,8 +45,9 @@ def load_dataset(filename="data.json", text_col="policy_text"):
     df = pd.DataFrame(data)
     
     # Ensure the required text column is present
-    if text_col not in df.columns:
-        raise ValueError(f"Expected column '{text_col}' not found in JSON data.")
+    if filename != "similarity_matrix.json":
+        if text_col not in df.columns:
+            raise ValueError(f"Expected column '{text_col}' not found in JSON data.")
     
     logger.info(f"Loaded {len(df)} policy documents from {filename}")
     return df
@@ -284,11 +287,78 @@ def display_similarity_matrix(matrix, labels, max_rows=8, decimal_places=3):
     if rows_to_print < n:
         print(f"... (Matrix truncated to {max_rows}x{max_rows})\n")
 
+def filter_rows_by_nonzero_threshold(sim_matrix, labels, fraction=0.1):
+    """
+    Removes rows and columns (and corresponding labels) from 'sim_matrix'
+    where the row has nonzero similarity with fewer than 'fraction' of the columns.
+    
+    Args:
+        sim_matrix (np.array): NxN similarity matrix.
+        labels (list): Corresponding labels of length N.
+        fraction (float): The fraction of columns that must have nonzero similarity.
+                          e.g., 0.5 means at least half must be nonzero.
+    
+    Returns:
+        filtered_matrix (np.array): The filtered NxN similarity matrix.
+        filtered_labels (list): The filtered labels.
+    """
+    # Count non-zero similarities for each row
+    nonzero_counts = np.count_nonzero(sim_matrix, axis=1)
+    
+    # Calculate threshold based on 'fraction'
+    threshold = sim_matrix.shape[1] * fraction
+    
+    # Create a boolean mask for rows that meet this requirement
+    keep_mask = nonzero_counts >= threshold
+    
+    # Filter matrix (both rows and columns) and labels
+    filtered_matrix = sim_matrix[keep_mask][:, keep_mask]
+    filtered_labels = [label for keep, label in zip(keep_mask, labels) if keep]
+    
+    return filtered_matrix, filtered_labels
+
+def plot_similarity_matrix(matrix, labels, title="Similarity Matrix", figsize=(5, 5), cmap="magma"):
+    """
+    Plots a similarity matrix as a heatmap with labeled axes and colorbar.
+    Makes the plot more condensed by reducing figure size, shrinking color bar,
+    and adjusting font sizes and spacing.
+    
+    Args:
+        matrix (np.array): NxN similarity matrix.
+        labels (list): List of document labels for rows/columns of the matrix.
+        title (str): Title of the heatmap.
+        figsize (tuple): Size of the figure.
+        cmap (str): Colormap for the heatmap (e.g., "magma", "coolwarm").
+    """
+
+    plt.figure(figsize=figsize)
+    sns.heatmap(
+        matrix,
+        cmap="magma",
+        xticklabels=False,
+        yticklabels=False,
+        cbar_kws={"label": "Cosine Similarity", "shrink": 0.5},
+        square=True,
+        vmin=0.0,
+        vmax=1.0
+    )
+    plt.figure(figsize=(5,5))
+
+
+    # Title and axes with smaller font sizes
+    plt.title(title, fontsize=10, pad=5)
+    plt.xlabel("Policies", fontsize=8)
+    plt.ylabel("Policies", fontsize=8)
+
+    # Tight layout with smaller padding
+    plt.tight_layout(pad=0.5)
+
+    plt.show()
 ###############################################################################
 # 8. MAIN ENTRY POINT
 ###############################################################################
 if __name__ == "__main__":
-    # 1) LOAD DATA
+    """    # 1) LOAD DATA
     input_file = "all_policies.json"  # The single file with all policy texts
     df = load_dataset(filename=input_file, text_col="policy_text")
 
@@ -297,7 +367,7 @@ if __name__ == "__main__":
         df, 
         text_col="policy_text", 
         concurrency=8,   # Adjust threads as appropriate
-        chunk_size=1200  # Tweak chunk size for your typical doc lengths
+        chunk_size=12000  # Tweak chunk size for your typical doc lengths
     )
 
     # 3) COMPUTE PAIRWISE COSINE SIMILARITIES
@@ -310,4 +380,36 @@ if __name__ == "__main__":
     # 5) DISPLAY A PORTION OF THE SIMILARITY MATRIX IN THE CONSOLE
     display_similarity_matrix(sim_matrix, labels, max_rows=8, decimal_places=3)
 
-    logger.info("Done! Check logs and output files for results.")
+    logger.info("Done! Check logs and output files for results.")"""
+    
+    # 1) Load the precomputed similarity matrix
+    similarity_file = "policy_similarity_results.json"  # JSON file with precomputed results
+
+    # 2) Load similarity matrix and labels
+    with open(similarity_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    # Extract labels and rebuild the similarity matrix
+    labels = list({pair["doc1"] for pair in data} | {pair["doc2"] for pair in data})  # Unique labels
+    labels.sort()  # Ensure consistent order
+    n = len(labels)
+    
+    # Create an NxN matrix initialized to zeros
+    sim_matrix = np.zeros((n, n), dtype=float)
+    label_to_index = {label: idx for idx, label in enumerate(labels)}  # Map labels to indices
+
+    # Populate the similarity matrix
+    for pair in data:
+        i, j = label_to_index[pair["doc1"]], label_to_index[pair["doc2"]]
+        sim_matrix[i, j] = pair["similarity"]
+        sim_matrix[j, i] = pair["similarity"]  # Symmetric
+
+    sim_matrix, labels = filter_rows_by_nonzero_threshold(sim_matrix, labels)
+    # 3) Plot the similarity matrix as a heatmap
+    plot_similarity_matrix(
+        sim_matrix,
+        labels,
+        title="Pairwise Document Similarity Heatmap (Loaded Data)",
+        figsize=(12, 10),
+        cmap="coolwarm"
+    )

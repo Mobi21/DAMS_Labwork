@@ -19,25 +19,36 @@ def save_results(results, filename="results.json"):
 
 # Call LLM to find the last update year
 def call_ollama_last_update_year(policy_text):
-    prompt = """
-    You are a legal and policy analysis expert. Your task is to analyze the privacy policy provided and extract the year of the most recent update.
-
-    **Instructions:**
-    - Carefully examine the policy text for any mention of "Last Updated," "Effective Date," or similar phrases.
-    - Extract the year from the date mentioned. For example:
-        - If the text states "Last Updated: May 1, 2022," you should extract "2022."
-        - If multiple years are mentioned, use the most recent year.
-    - If no year is mentioned, respond with "Last_Updated_Year: 0".
-
-    **Response Format:**
-    Your response should strictly be in one of the following formats:
-        - "Last_Updated_Year: [YYYY]"
-        - "Last_Updated_Year: 0"
-
-    Privacy policy text to analyze:
-    {policy_text}
-
-    **Important Note:** Do not include any additional text or commentary in your response. Strictly adhere to the response format.
+    prompt = f"""
+    You are an advanced policy analysis AI. Your task is to examine the following privacy policy text and find the year of its most recent update.
+    
+    **What to look for**:
+    - Search for any indication of a last revision or effective date. Example keywords:
+      - "Last Updated"
+      - "Effective Date"
+      - "Revision Date"
+      - "Last Revised"
+      - "Amended on"
+      - "Version Date"
+      - "As of"
+      - "Posted on"
+    - Extract the year from the identified date. If multiple years are mentioned, choose the most recent (i.e., the largest year).
+    - If no relevant update year is found, respond with "Last_Updated_Year: 0".
+    
+    **Required Response Format**:
+    Your answer must be exactly one line in either of these two formats:
+    - "Last_Updated_Year: YYYY"
+    - "Last_Updated_Year: 0"
+    
+    Nothing else.
+    
+    Privacy policy text:
+        {policy_text}
+    
+    **Important**:
+    - Do not include any additional text, commentary, or explanation in your response.
+    - If you find multiple possible dates, pick the largest year.
+    - If you are uncertain or no year is explicitly stated, respond with "Last_Updated_Year: 0".
     """
     try:
         response = ollama.generate(model="llama3.1", prompt=prompt)
@@ -45,6 +56,7 @@ def call_ollama_last_update_year(policy_text):
     except Exception as e:
         print(f"Error: {e}")
         return None
+
 
 # Parse the LLM response
 def parse_year_response(response):
@@ -65,7 +77,10 @@ def analyze_last_update_year(data):
         while not year_found:
             year_found = True
             response = call_ollama_last_update_year(policy_text)
-            parsed_response = parse_year_response(response.get("response"))
+            response = response.get("response")
+            #print(response)
+            parsed_response = parse_year_response(response)
+            print(parsed_response)
             if parsed_response is None:
                 year_found = False
             else:
@@ -75,28 +90,14 @@ def analyze_last_update_year(data):
 
 # Generate summary statistics
 def summarize_results(data):
-    policies_with_year = len(data[data["last_updated_year"] > 0])
-    policies_without_year = len(data[data["last_updated_year"] == 0])
-    
-    print(f"Total Policies: {len(data)}")
-    print(f"Policies with 'Last Updated Year': {policies_with_year}")
-    print(f"Policies without 'Last Updated Year': {policies_without_year}")
+    for year in range(2000, 2028):
+        count = len(data[data["last_updated_year"] == year])
+        print(f"Year: {year}, Count: {count}")
+        
+    print(len(data))
 
 if __name__ == "__main__":
-    # Load the first dataset
-    data = load_results("final_data.json")
 
-    # Analyze the last update year
-    results = analyze_last_update_year(data)
-
-    # Save the results
-    save_results(results, "results.json")
-
-    # Load the second dataset
-    data = load_results("google_play_wayback.json")
-
-    # Analyze the last update year
-    results = analyze_last_update_year(data)
-
-    # Save the results
-    save_results(results, "wayback_results.json")
+    
+    results = load_results("results.json")
+    summarize_results(results)
