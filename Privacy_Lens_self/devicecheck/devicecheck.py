@@ -23,39 +23,8 @@ def load_results(filename="data.json"):
 def save_results(results, filename="results.json"):
     df = pd.DataFrame(results)
     df.to_json(filename, orient="records", indent=4)
-    
 
-
-
-def check_device_in_policy_with_ollama4(policy_text, model="llama3.1"):
-    # Define the prompt for analyzing the policy text
-    prompt = (
-        "You are a precise and logical text analysis assistant. Analyze the following company policy text and determine if "
-        "it **clearly and explicitly mentions the company's own smart device and whether the policy applies to the smart device itself** anywhere in the text. "
-        "Return 'Device: ' followed by the smart device if it is mentioned and covered by the policy, or 'Device: None' if no such device is mentioned or covered. "
-        "Provide no additional output, explanation, or text other than 'Device: ' followed by the smart device or 'None'.\n\n"
-        
-        "Policy Text to Analyze:\n"
-        + policy_text +
-        "\n\n"
-        
-        "Your response should only be:\n"
-        "- 'Device: ' followed by the company's smart device if it is mentioned and covered by the policy text.\n"
-        "- 'Device: None' if the company's smart device is not mentioned or not covered by the policy text.\n\n"
-        
-        "STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. Your response must "
-        "start with 'Device: ' followed by the company's smart device or 'None'."
-    )
-
-    try:
-        # Use Ollama library to interact with the model
-        response = ollama.generate(model=model, prompt=prompt)
-        return response  # Ensure response is properly stripped to avoid whitespace issues
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
 def check_device_in_policy_with_ollama5(policy_text, model="llama3.1"):
-    # Define the comprehensive and detailed prompt for analyzing the policy text
     prompt = """
     You are a highly skilled text analysis assistant specializing in legal and policy documents. Your task is to analyze the provided company policy text and determine whether it **explicitly mentions any smart device manufactured by the company and if the policy explicitly applies to that device.**
     
@@ -107,7 +76,6 @@ def check_device_in_policy_with_ollama5(policy_text, model="llama3.1"):
     - Base your evaluation solely on the text provided, adhering to the criteria above.
     """
     try:
-        # Use Ollama library to interact with the model
         response = ollama.generate(model=model, prompt=prompt)
         return response
     except Exception as e:
@@ -116,122 +84,58 @@ def check_device_in_policy_with_ollama5(policy_text, model="llama3.1"):
 
 def parse_response3(response):
     try:
-        # Ensure `response` is a string
         if isinstance(response, dict):
             response_text = response.get("response", "")
         else:
             response_text = response
-
         response_text = response_text.strip()
-
-        # Check if the response starts with 'Device:'
         if response_text.lower().startswith('device:'):
-            # Extract the text after 'Device:'
             device_info = response_text[len('Device:'):].strip()
-            # Only take the first line to avoid capturing any additional text
             device_info = device_info.split('\n')[0].strip()
             if device_info.lower() == 'none':
-                return None  # Return None if 'Device: None' is received
+                return None
             else:
-                return device_info  # Return only the device mentioned
-        else:
-            return None  # The response does not match the expected format
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-
-
-def parse_response(response):
-    try:
-        # Ensure `response` is the expected string, not a dictionary
-        if isinstance(response, dict):
-            response_text = response.get("response")  # Extract the string part of the response
-        else:
-            response_text = response
-
-        # Use a regular expression to extract the similarity score
-        match = re.search(r"True|False", response_text)
-        if match:
-            return match.group()
+                return device_info
         else:
             return None
     except Exception as e:
         print(f"Error: {e}")
         return None
-    
-def parse_response_full(response, devices_list):
-    try:
-        # Ensure `response` is a string
-        if isinstance(response, dict):
-            response_text = response.get("response", "")
-        else:
-            response_text = response
 
-        response_text = response_text.lower()
+def process_device_policy(row):
+    manufacturer = row['manufacturer']
+    policy_text = row['policy_text']
+    response_dict = check_device_in_policy_with_ollama5(policy_text)
+    log_entry = {"manufacturer": manufacturer, "policy_text": policy_text}
+    if response_dict:
+        log_entry.update(response_dict)
+    response_text = response_dict.get('response') if response_dict else ""
+    parsed_device = parse_response3(response_text)
+    devicecheck = True if parsed_device and len(parsed_device) > 0 else False
+    result = {
+        "manufacturer": manufacturer,
+        "devices": parsed_device if parsed_device else "",
+        "DeviceCheck": devicecheck,
+        "policy_text": policy_text
+    }
+    return result, log_entry
 
-        # Check if 'false' is in the response text
-        if 'false' in response_text:
-            return False
-
-        # Create a regex pattern to match any device category
-        devices_pattern = r'\b(' + '|'.join(re.escape(device.lower()) for device in devices_list) + r')\b'
-
-        # Search for any device category in the response
-        matches = re.findall(devices_pattern, response_text)
-        if matches:
-            # Return the first matched device category with original casing
-            for device in devices_list:
-                if device.lower() == matches[0]:
-                    return device
-        else:
-            return False
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-    
-    
 def check_all_devices_in_policy(df, devices_list):
     results = []
-    for index, row in tqdm(df.iterrows(), total=len(df)):
-        manufacturer = row['manufacturer']
-        policy_text = row['policy_text']
-        response = check_device_in_policy_with_ollama5(policy_text)
-     
-        response = response.get('response')
-        response = parse_response3(response)
-        devicecheck = False
-        if response is False or response is None or response == "None":
-            response = []
-        if len(response) > 0:
-            devicecheck = True
-        results.append({"manufacturer": manufacturer, "devices": response, "DeviceCheck": devicecheck, "policy_text": policy_text})
-    return results
-def check_device_in_policies(df, device_list):
-    results = []
-    for index, row in tqdm(df.iterrows(), total=len(df)):
-        manufacturer = row['manufacturer']
-        policy_text = row['policy_text']
-        found_devices = []
-        for device in device_list:
-            response = check_device_in_policy_with_ollama(policy_text, device)
-            response = parse_response(response.get('response'))
-            if response is True:
-                print(f"Device: {device} mentioned in the policy text")
-                found_devices.append(device)
-        if len(found_devices) > 0:
-            check = True
-        else:
-            check = False
-        results.append({"manufacturer": manufacturer, "devices": found_devices, "policy_text": policy_text, "device_mentioned": check})
-    return results
+    logs = []
+    records = df.to_dict("records")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for res, log in tqdm(executor.map(process_device_policy, records), total=len(records), desc="Checking Devices in Policies"):
+            results.append(res)
+            logs.append(log)
+    return pd.DataFrame(results), pd.DataFrame(logs)
 
 def device_count(df):
     count = 0
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         if row['DeviceCheck'] == True:
             count += 1
     print(f"Number of policies mentioning a device: {count}")
-    
     return count
 
 def combine_df(df1, df2):
@@ -239,17 +143,23 @@ def combine_df(df1, df2):
     return df
 
 if __name__ == "__main__":
-    """
-    df = load_results('final_data.json')
-    df = check_all_devices_in_policy(df, device_list)
-    save_results(df, 'device_check.json')
-    """
-    df1 = load_results('google_play_wayback.json')
-    df1 = check_all_devices_in_policy(df1, device_list)
-    save_results(df1, 'devicecheck_wayback.json')
-    """
-    df = load_results('device_check.json')
-    count = device_count(df)
-    print(f"Number of policies mentioning a device: {count}")
-    print(f"Total number of policies: {len(df)}")
-    """
+    # For example, using google_play_wayback.json:
+    
+        # Process final_data.json
+    data1 = load_results("final_data.json")
+    results1, logs1 = check_all_devices_in_policy(data1, device_list)
+    
+    # Process google_play_wayback.json
+    data2 = load_results("google_play_wayback.json")
+    results2, logs2 = check_all_devices_in_policy(data2, device_list)
+    
+    # Combine both datasets so that both final files have the same amount of rows
+    final_results = pd.concat([results1, results2], ignore_index=True)
+    final_logs = pd.concat([logs1, logs2], ignore_index=True)
+    
+    # Save the final combined results and logs
+    save_results(final_results, "final_results_final.json")
+    save_results(final_logs, "data_logs.json")
+    
+    
+

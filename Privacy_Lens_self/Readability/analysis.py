@@ -6,11 +6,23 @@ import time
 import logging
 from tqdm import tqdm
 import random
+from concurrent.futures import ThreadPoolExecutor
 
 def load_data():
     with open("data.json") as file:
         data = json.load(file)
     return data
+
+def load_results(filename="data.json"):
+    with open(filename, encoding='utf-8') as file:
+        data = json.load(file)
+    df = pd.DataFrame(data)
+    if filename == "results.json":
+        df = df[['manufacturer', 'response']]
+    return df
+
+def save_results(results, filename="results.json"):
+    results.to_json(filename, orient="records", indent=4)
 
 def call_ollama_with_library(prompt, prompt_helper2=""):
     model = "llama3.1"
@@ -18,7 +30,6 @@ def call_ollama_with_library(prompt, prompt_helper2=""):
         "\n YOUR ONLY OUTPUT SHOULD BE HE RESULT. DONT TELL ME HOW TO DO IT MYSELF OR GIVE ME A CODE ON HOW TO DO IT. give me my desired output that is all. Remember to use the correct name for the output name"
     )
     try:
-        # Use Ollama library to interact with the model
         response = ollama.generate(model=model, prompt=prompt + prompt_helper + prompt_helper2)
         return response  # Response is already in JSON format
     except Exception as e:
@@ -260,142 +271,8 @@ def get_grammatical_errors(policy_text):
     """
     return call_ollama_with_library(prompt)
 
-def analysis(data):
-    results = []
-    # Wrap data.iterrows() with tqdm for a progress bar
-    for _, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing policies"):
-        policy_text = policy["policy_text"]
-
-        found_coherence_score = False
-        coherence_score_count = 0
-        while not found_coherence_score:
-            coherence_score_count += 1
-            response = get_coherence_score(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and coherence_score_count < 7:
-                found_coherence_score = False
-            else:
-                policy["coherence_score"] = response
-                found_coherence_score = True
-
-        found_imprecise_words_frequency = False
-        imprecise_words_frequency_count = 0
-        while not found_imprecise_words_frequency:
-            imprecise_words_frequency_count += 1
-            response = get_imprecise_words_frequency(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and imprecise_words_frequency_count < 7:
-                found_imprecise_words_frequency = False
-            else:
-
-                policy["imprecise_words_frequency"] = response
-                found_imprecise_words_frequency = True
-
-        found_connective_words_frequency = False
-        connective_words_frequency_count = 0
-        while not found_connective_words_frequency:
-            connective_words_frequency_count += 1
-            response = get_connective_words_frequency(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and connective_words_frequency_count < 7:
-                found_connective_words_frequency = False
-            else:
-
-                policy["connective_words_frequency"] = response
-                found_connective_words_frequency = True
-
-        found_reading_complexity = False
-        reading_complexity_count = 0
-        while not found_reading_complexity:
-            reading_complexity_count += 1
-            response = get_reading_complexity(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and reading_complexity_count < 7:
-                found_reading_complexity = False
-            else:
-
-                policy["reading_complexity"] = response
-                found_reading_complexity = True
-
-        found_reading_time = False
-        reading_time_count = 0
-        while not found_reading_time:
-            reading_time_count += 1
-            response = get_reading_time(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and reading_time_count < 7:
-                found_reading_time = False
-            else:
-
-                policy["reading_time"] = response
-                found_reading_time = True
-
-        found_entropy = False
-        entropy_count = 0
-        while not found_entropy:
-            entropy_count += 1
-            response = get_entropy(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and entropy_count < 7:
-                found_entropy = False
-            else:
-
-                policy["entropy"] = response
-                found_entropy = True
-
-        found_unique_words_frequency = False
-        unique_words_frequency_count = 0
-        while not found_unique_words_frequency:
-            unique_words_frequency_count += 1
-            response = get_unique_words_frequency(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and unique_words_frequency_count < 7:
-                found_unique_words_frequency = False
-            else:
-
-                policy["unique_words_frequency"] = response
-                found_unique_words_frequency = True
-
-        found_grammatical_errors = False
-        grammatical_errors_count = 0
-        while not found_grammatical_errors:
-            grammatical_errors_count += 1
-            response = get_grammatical_errors(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None and grammatical_errors_count < 7:
-                found_grammatical_errors = False
-            else:
-
-                policy["grammatical_errors"] = response
-                found_grammatical_errors = True
-
-        results.append(policy)
-    updated_data = pd.DataFrame(results)
-    return updated_data
-
-def selective_analysis(data):
-    results = []
-    for _, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing policies"):
-        policy_text = policy["policy_text"]
-        runcount = 0    
-        found_grammatical_errors = False
-        while not found_grammatical_errors:
-            runcount += 1
-            found_grammatical_errors = True
-            response = get_grammatical_errors(policy_text)
-            response = parse_response(response.get('response'), policy_text)
-            if response is None:
-                if runcount < 5:
-                    found_grammatical_errors = False
-            else:
-                policy["grammatical_errors"] = response
-                
-        results.append(policy)
-    updated_data = pd.DataFrame(results)
-    return updated_data
-
-def save_results(results, filename="results.json"):
-    results.to_json(filename, orient="records", indent=4)
+def word_count(text):
+    return len(text.split())
 
 def parse_response(response, text):
     metrics = {}
@@ -409,92 +286,91 @@ def parse_response(response, text):
         'unique_words_frequency': r'"unique_words_frequency":\s*([0-9.]+)',
         'grammatical_errors': r'"grammatical_errors":\s*([0-9.]+)',
     }
-    found = 0
-    match = False
-    key = None
-    for keys, pattern in patterns.items():
-        matches = re.search(pattern, response)
-        if matches:
-            match = matches
-            key = keys
-            
-    if match:
-        found += 1
-        value = match.group(1)
-        if key == 'reading_time':
+    key_found = None
+    for key, pattern in patterns.items():
+        match = re.search(pattern, response)
+        if match:
+            key_found = key
             try:
-                metrics['reading_time'] = float(value)
+                value = float(match.group(1))
             except ValueError:
-                metrics['reading_time'] = None
-                logging.warning(f"Invalid reading_time value: {value}")
-        elif key == 'entropy':
-            try:
-                metrics['entropy'] = float(value)
-            except ValueError:
-                metrics['entropy'] = None
-                logging.warning(f"Invalid entropy value: {value}")
-        elif key == 'reading_complexity':
-            try:
-                metrics['reading_complexity'] = float(value)
-            except ValueError:
-                metrics['reading_complexity'] = None
-                logging.warning(f"Invalid reading_complexity value: {value}")
-        elif key == 'coherence_score':
-            try:
-                metrics['coherence_score'] = float(value)
-            except ValueError:
-                metrics['coherence_score'] = None
-                logging.warning(f"Invalid coherence_score value: {value}")
-        elif key == 'grammatical_errors':
-            try:
-                metrics['grammatical_errors'] = float(value)
-            except ValueError:
-                metrics['grammatical_errors'] = None
-                logging.warning(f"Invalid grammatical_errors value: {value}")
-        elif key == 'imprecise_words_frequency':
-            try:
-                metrics['imprecise_words_frequency'] = float(value)
-            except ValueError:
-                metrics['imprecise_words_frequency'] = None
-                logging.warning(f"Invalid imprecise_words_frequency value: {value}")       
-        elif key == 'connective_words_frequency':
-            try:
-                metrics['connective_words_frequency'] = float(value)
-            except ValueError:
-                metrics['connective_words_frequency'] = None
-                logging.warning(f"Invalid connective_words_frequency value: {value}")
-        elif key == 'unique_words_frequency':
-            try:
-                metrics['unique_words_frequency'] = float(value)
-            except ValueError:
-                metrics['unique_words_frequency'] = None
-                logging.warning(f"Invalid unique_words_frequency value: {value}")
-        else:
-            try:
-                value = "[" + value.strip(", ").strip("[]") + "]"  # Wrap in brackets
-                metrics[key] = json.loads(value)
-                print(len(metrics[key]))
-                metrics[key] = int(len(metrics[key])) / word_count(text)
-            except json.JSONDecodeError:
-                metrics[key] = None
-                logging.warning(f"Invalid list value for {key}: {value}")
-    else:
-        logging.warning(f"Nothing found in response.")
-        metrics[key] = None
+                value = None
+            metrics[key] = value
+            break
+    if key_found is None:
+        logging.warning("Nothing found in response.")
+        return None
+    return metrics.get(key_found)
+
+### --- Concurrency & Logging Updates ---
+
+def process_policy(policy):
+    updated_policy = policy.copy()
+    log_entry = {}  # to capture full response dictionaries for each metric
+    policy_text = updated_policy["policy_text"]
     
-    return metrics.get(key)
+    # Define metric functions mapping metric name to function
+    metrics = {
+        "coherence_score": get_coherence_score,
+        "imprecise_words_frequency": get_imprecise_words_frequency,
+        "connective_words_frequency": get_connective_words_frequency,
+        "reading_complexity": get_reading_complexity,
+        "reading_time": get_reading_time,
+        "entropy": get_entropy,
+        "unique_words_frequency": get_unique_words_frequency,
+        "grammatical_errors": get_grammatical_errors
+    }
+    
+    for metric, func in metrics.items():
+        found = False
+        count = 0
+        metric_response = None
+        while not found and count < 7:
+            count += 1
+            metric_response = func(policy_text)
+            parsed = parse_response(metric_response.get('response'), policy_text)
+            if parsed is None and count < 7:
+                continue
+            else:
+                updated_policy[metric] = parsed
+                found = True
+        log_entry[metric] = {
+            "response": metric_response,
+            "retries": count
+        }
+    return updated_policy, {"manufacturer": updated_policy.get("manufacturer", ""), "policy_text": policy_text, "metrics_log": log_entry}
 
-def word_count(text):
-    return len(text.split())
+def analysis(data):
+    results = []
+    logs_all = []
+    records = data.to_dict("records")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for res, log in tqdm(executor.map(process_policy, records), total=len(records), desc="Analyzing policies"):
+            results.append(res)
+            logs_all.append(log)
+    return pd.DataFrame(results), pd.DataFrame(logs_all)
 
-def load_results(filename="data.json"):
-    with open(filename, encoding='utf-8') as file:
-        data = json.load(file)
-    df = pd.DataFrame(data)
-    if filename == "results.json":
-        df = df[['manufacturer', 'response']]
+### --- End Concurrency & Logging Updates ---
 
-    return df
+def selective_analysis(data):
+    results = []
+    for _, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing policies"):
+        policy_text = policy["policy_text"]
+        runcount = 0    
+        found_grammatical_errors = False
+        while not found_grammatical_errors:
+            runcount += 1
+            found_grammatical_errors = True
+            response = get_grammatical_errors(policy_text)
+            response_parsed = parse_response(response.get('response'), policy_text)
+            if response_parsed is None:
+                if runcount < 5:
+                    found_grammatical_errors = False
+            else:
+                policy["grammatical_errors"] = response_parsed
+        results.append(policy)
+    updated_data = pd.DataFrame(results)
+    return updated_data
 
 def change_columns_names(df):
     df = df.rename(columns={
@@ -615,13 +491,22 @@ def combine_df(df1, df2):
     return df
 
 if __name__ == "__main__":
+    # Process final_data.json
     df = load_results('final_data.json')
-    df = analysis(df)
-    save_results(df, 'readability_results.json')
+    results_df, logs_df = analysis(df)
     
+    # Process google_play_wayback.json
     df1 = load_results('google_play_wayback.json')
-    df1 = analysis(df1)
-    save_results(df1, 'readability_wayback.json')
+    results_df1, logs_df1 = analysis(df1)
+    
+    # Combine both datasets so that the final results and logs have the same number of rows
+    final_results = pd.concat([results_df, results_df1], ignore_index=True)
+    final_logs = pd.concat([logs_df, logs_df1], ignore_index=True)
+    
+    # Save the combined final results and logs
+    save_results(final_results, 'readability_final_results.json')
+    save_results(final_logs, 'readability_final_logs.json')
+    
     """
     print("TRUE DATA")
     df1 = load_results("readability_true.json")

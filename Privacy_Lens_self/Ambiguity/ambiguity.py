@@ -6,62 +6,17 @@ import time
 import logging
 from tqdm import tqdm
 import random
+from concurrent.futures import ThreadPoolExecutor
 
 def load_results(filename="data.json"):
     with open(filename, encoding='utf-8') as file:
         data = json.load(file)
     df = pd.DataFrame(data)
-
     return df
-
 
 def save_results(results, filename="results.json"):
     results.to_json(filename, orient="records", indent=4)
-    
-    
-def call_ollama(policy_text):
-    prompt = """
-        You are an expert in legal text analysis, specializing in privacy policies. Your task is to analyze the following privacy policy text and determine its level of ambiguity based on the criteria below.
 
-        **Ambiguity Levels:**
-
-        1. **Not Ambiguous (1):**
-
-
-        2. **Somewhat Ambiguous (2):**
-
-
-        3. **Ambiguous (3):**
-
-
-        **Instructions:**
-
-        - Carefully read the provided privacy policy text.
-        - Determine the level of ambiguity based on the criteria above.
-        - Do not include any additional commentary or analysis.
-        - **Your response should strictly be in the following format:**
-
-        Ambiguity_level:[value]
-
-
-        The privacy policy text to analyze is provided below:
-            {policy_text}
-            \n
-            
-        Your response should only be:
-        "Ambiguity_level":value(1-3)
-        
-        STRICT OUTPUT REQUIREMENT: Do not include any additional information, text, or explanation. 
-        Your response must be in the format of Ambiguity_level:value(1-3). THERE SHOULD BE NO OTHER NUMBERS IN THE RESPONSE
-    """
-
-    try:
-        response = ollama.generate(model="llama3.1", prompt= prompt)
-        return response
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-    
 def call_ollama1(policy_text):
     prompt = """
     You are an expert in legal and policy analysis with a specialization in evaluating the clarity and transparency of privacy policies. 
@@ -147,11 +102,9 @@ def call_ollama1(policy_text):
     except Exception as e:
         print(f"Error: {e}")
         return None  
-    
+
 def parse_response(response):
-    pattern = r'"Ambiguity_level":\s*([1-3])'
     match = re.search(r"1|2|3", response)
-    
     if match:
         try:
             return float(match.group())
@@ -162,63 +115,66 @@ def parse_response(response):
         logging.error("Error parsing response.")
         return None
 
+def process_policy(policy):
+    # Process a single policy row
+    policy_text = policy["policy_text"]
+    found_ambiguity = False
+    response_dict = None
+    ambiguity_level = None
+    # Retry until a valid ambiguity level is obtained
+    while not found_ambiguity:
+        response_dict = call_ollama1(policy_text)
+        full_response = response_dict.get("response") if response_dict else ""
+        ambiguity_level = parse_response(full_response)
+        if ambiguity_level is not None:
+            found_ambiguity = True
+            policy["ambiguity_level"] = ambiguity_level
+    log_entry = {"policy_text": policy_text}
+    if response_dict:
+        log_entry.update(response_dict)
+    return policy, log_entry
+
 def analysis(data):
     results = []
-    for index, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing Privacy Policies"):
-        policy_text = policy["policy_text"]
-        
-        found_ambiguity = False
-        while not found_ambiguity:
-            found_ambiguity = True
-            response = call_ollama1(policy_text)
-            response = parse_response(response.get("response"))
-            if response is None:
-                found_ambiguity = False
-            else:
-                policy["ambiguity_level"] = response
-        
-        results.append(policy)
-            
-    return pd.DataFrame(results)
+    logs = []
+    records = data.to_dict("records")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        # Use ThreadPoolExecutor to process policies concurrently
+        for processed_policy, log_entry in tqdm(executor.map(process_policy, records), total=len(records), desc="Analyzing Privacy Policies"):
+            results.append(processed_policy)
+            logs.append(log_entry)
+    return pd.DataFrame(results), pd.DataFrame(logs)
 
-def results(data):
-    count_1 = 0
-    count_2 = 0
-    count_3 = 0
-    for index, policy in data.iterrows():
+def results_summary(data):
+    count_1 = count_2 = count_3 = 0
+    for _, policy in data.iterrows():
         if policy["ambiguity_level"] == 1:
             count_1 += 1
         elif policy["ambiguity_level"] == 2:
             count_2 += 1
         elif policy["ambiguity_level"] == 3:
             count_3 += 1
-            
     print(f"Total Policies: {len(data)}")
     print(f"Ambiguity Level 1: {count_1}")
     print(f"Ambiguity Level 2: {count_2}")
     print(f"Ambiguity Level 3: {count_3}")
-   
+
 if __name__ == "__main__":
-   
-    # Load the data
-    data = load_results("final_data.json")
-
-
-    # Analyze the privacy policies
-    results = analysis(data)
+    # Process final_data.json
+    data1 = load_results("final_data.json")
+    results1, logs1 = analysis(data1)
     
-    # Save the results
-    save_results(results, "results.json")
+    # Process google_play_wayback.json
+    data2 = load_results("google_play_wayback.json")
+    results2, logs2 = analysis(data2)
     
-    data = load_results("google_play_wayback.json")
-    results = analysis(data)
-    save_results(results, "wayback_results.json")
-
-"""
-    # Load the results
-    result = load_results("ambiguity_true.json")
-    results(result)
+    # Combine both datasets so that both final files have the same amount of rows
+    final_results = pd.concat([results1, results2], ignore_index=True)
+    final_logs = pd.concat([logs1, logs2], ignore_index=True)
     
-    result = load_results("ambiguity_false.json")
-    results(result)
-    """
+    # Save the final combined results and logs
+    save_results(final_results, "final_results_final.json")
+    save_results(final_logs, "data_logs.json")
+    
+    # Optionally, print a summary of the results
+    results_summary(final_results)

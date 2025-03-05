@@ -4,6 +4,7 @@ import logging
 from tqdm import tqdm
 import re
 import ollama  # Ensure Ollama is properly installed and configured
+from concurrent.futures import ThreadPoolExecutor
 
 # Load and save functions
 def load_results(filename="data.json"):
@@ -56,52 +57,70 @@ def call_ollama_with_library_for_keywords(text, category, category_description, 
 # Parsing function for Ollama response
 def parse_keywords_from_text(text):
     """
-    Extract the text within square brackets [ ] and inside double quotes " " in a given string.
+    Extract the text within double quotes inside square brackets.
     
-    Parameters:
-        text (str): The string to parse.
-        
-    Returns:
-        list: A list of strings found within the square brackets and double quotes.
+    Returns the count of keywords found.
     """
     try:
-        # Regular expression to match strings inside double quotes within square brackets
+        # Regular expression to match strings inside double quotes
         matches = re.findall(r'"(.*?)"', text)
         return len(matches)
     except Exception as e:
         logging.error(f"Error while parsing text: {e}")
-        return []
+        return 0
 
-# Data collection function
+# Helper function to process a single policy for keyword extraction
+def process_policy_keywords(policy, categories):
+    result = {"manufacturer": policy["manufacturer"]}
+    logs = []  # list to hold log entries for each category
+    policy_text = policy["policy_text"]
+    for category, description in categories.items():
+        retries = 0
+        valid = False
+        response_dict = None
+        keywords = 0
+        while not valid and retries < 5:
+            retries += 1
+            response_dict = call_ollama_with_library_for_keywords(policy_text, category, description)
+            response_text = response_dict.get("response") if response_dict else ""
+            keywords = parse_keywords_from_text(response_text)
+            # Accept even a zero count as a valid result
+            if keywords is not None:
+                valid = True
+        if not valid:
+            logging.warning(f"Failed to extract keywords for category {category}.")
+        result[category] = keywords
+        # Log entry capturing full response info along with metadata
+        log_entry = {
+            "manufacturer": policy["manufacturer"],
+            "policy_text": policy_text,
+            "category": category,
+            "retries": retries
+        }
+        if response_dict:
+            log_entry.update(response_dict)
+        logs.append(log_entry)
+    return result, logs
+
+# Data collection function with concurrency
 def collect_keyword_data(data, categories):
     results = []
-    for _, policy in tqdm(data.iterrows(), total=len(data), desc="Keyword Collection"):
-        policy_text = policy["policy_text"]
-        policy_results = {"manufacturer": policy["manufacturer"]}
-        for category, description in categories.items():
-            keywords = []
-            valid = False
-            retries = 0
-            while not valid and retries < 5:
-                retries += 1
-                response = call_ollama_with_library_for_keywords(policy_text, category, description)
-                keywords = parse_keywords_from_text(response.get("response"))
-                if keywords is not None:
-                    valid = True
-            if keywords is None:
-                logging.warning(f"Failed to extract keywords for category {category}.")
-                keywords = []
-            policy_results[category] = keywords
-        results.append(policy_results)
-    return pd.DataFrame(results)
+    all_logs = []
+    records = data.to_dict("records")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for res, log in tqdm(executor.map(lambda record: process_policy_keywords(record, categories), records),
+                             total=len(records), desc="Keyword Collection"):
+            results.append(res)
+            all_logs.extend(log)
+    return pd.DataFrame(results), pd.DataFrame(all_logs)
 
 # Analysis functions
 def keyword_summary(df):
     for column in df.columns[1:]:
         print(f"Category: {column}")
-        print(f" - Total Keywords: {df[column].apply(len).sum()}")
-        print(f" - Average Keywords: {df[column].apply(len).mean():.2f}")
-        print(f" - Max Keywords: {df[column].apply(len).max()}")
+        print(f" - Total Keywords: {df[column].sum()}")
+        print(f" - Average Keywords: {df[column].mean():.2f}")
+        print(f" - Max Keywords: {df[column].max()}")
         print(f" - Null Count: {df[column].isnull().sum()}")
 
 # Combine dataframes
@@ -124,13 +143,22 @@ if __name__ == "__main__":
         "policy_change": "Keywords about modifications, updates, or changes to privacy policies."
     }
 
-
-
-    # Summarize results
-    df = load_results('final_data.json')
-    df = collect_keyword_data(df, categories)
-    save_results(df, 'keyword_results.json')
     
+    
+    
+    # Process first dataset
+    df = load_results('final_data.json')
+    results_df, logs_df = collect_keyword_data(df, categories)
+
+    # Process second dataset
     df1 = load_results('google_play_wayback.json')
-    df1 = collect_keyword_data(df1, categories)
-    save_results(df1, 'keyword_wayback.json')
+    results_df1, logs_df1 = collect_keyword_data(df1, categories)
+
+    final_results = pd.concat([results_df, results_df1], ignore_index=True)
+    final_logs = pd.concat([logs_df, logs_df1], ignore_index=True)
+    
+    # Save the final combined results and logs
+    save_results(final_results, "final_results_final.json")
+    save_results(final_logs, "data_logs.json")
+    # Optionally, you can print a summary
+    keyword_summary(results_df)
