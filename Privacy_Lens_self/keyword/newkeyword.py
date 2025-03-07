@@ -158,7 +158,7 @@ if __name__ == "__main__":
     final_logs = pd.concat([logs_df, logs_df1], ignore_index=True)
     
     # Save the final combined results and logs
-    save_results(final_results, "final_results_final.json")
+    save_results(final_results, "keyword_results.json")
     save_results(final_logs, "data_logs.json")
     # Optionally, you can print a summary
     keyword_summary(results_df)

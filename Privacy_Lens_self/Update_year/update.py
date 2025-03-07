@@ -5,6 +5,7 @@ import ollama  # Ensure Ollama is properly installed and configured
 import time
 import logging
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 
 # Load JSON data
 def load_results(filename="final_data.json"):
@@ -57,7 +58,6 @@ def call_ollama_last_update_year(policy_text):
         print(f"Error: {e}")
         return None
 
-
 # Parse the LLM response
 def parse_year_response(response):
     pattern = r"Last_Updated_Year:\s*(\d{4}|0)"
@@ -68,36 +68,66 @@ def parse_year_response(response):
         logging.error("Error parsing response.")
         return 0
 
-# Analyze privacy policies for the last update year
+# Process a single policy for the last update year (with retries and logging)
+def process_policy_year(policy):
+    updated_policy = policy.copy()
+    log_entry = {
+        "manufacturer": policy.get("manufacturer", ""),
+        "policy_text": policy.get("policy_text", "")
+    }
+    retries = 0
+    found = False
+    response_obj = None
+    last_year = None
+    while not found and retries < 7:
+        retries += 1
+        response_obj = call_ollama_last_update_year(updated_policy["policy_text"])
+        response_text = response_obj.get("response") if response_obj else ""
+        parsed_year = parse_year_response(response_text)
+        # Accept the parsed year (even if it is 0) as valid
+        found = True
+        last_year = parsed_year
+    updated_policy["last_updated_year"] = last_year
+    log_entry["last_update_year_log"] = {
+        "response": response_obj,
+        "retries": retries
+    }
+    return updated_policy, log_entry
+
+# Analyze privacy policies for the last update year concurrently
 def analyze_last_update_year(data):
     results = []
-    for index, policy in tqdm(data.iterrows(), total=len(data), desc="Analyzing Privacy Policies for Last Update Year"):
-        policy_text = policy["policy_text"]
-        year_found = False
-        while not year_found:
-            year_found = True
-            response = call_ollama_last_update_year(policy_text)
-            response = response.get("response")
-            #print(response)
-            parsed_response = parse_year_response(response)
-            print(parsed_response)
-            if parsed_response is None:
-                year_found = False
-            else:
-                policy["last_updated_year"] = parsed_response
-        results.append(policy)
-    return pd.DataFrame(results)
+    logs = []
+    records = data.to_dict("records")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for res, log in tqdm(executor.map(process_policy_year, records), total=len(records), desc="Analyzing Policies for Last Update Year"):
+            results.append(res)
+            logs.append(log)
+    return pd.DataFrame(results), pd.DataFrame(logs)
 
 # Generate summary statistics
 def summarize_results(data):
     for year in range(2000, 2028):
         count = len(data[data["last_updated_year"] == year])
         print(f"Year: {year}, Count: {count}")
-        
-    print(len(data))
+    print(f"Total policies: {len(data)}")
 
 if __name__ == "__main__":
-
+    # Load data from both sources
+    data_final = load_results("final_data.json")
+    data_wayback = load_results("google_play_wayback.json")
     
-    results = load_results("results.json")
-    summarize_results(results)
+    # Analyze policies concurrently
+    results_final, logs_final = analyze_last_update_year(data_final)
+    results_wayback, logs_wayback = analyze_last_update_year(data_wayback)
+    
+    # Combine both datasets so that final results and logs have the same number of rows
+    final_results = pd.concat([results_final, results_wayback], ignore_index=True)
+    final_logs = pd.concat([logs_final, logs_wayback], ignore_index=True)
+    
+    # Save the combined final results and logs
+    save_results(final_results, "last_update_final_results.json")
+    save_results(final_logs, "last_update_final_logs.json")
+    
+    # Optionally, generate summary statistics
+    summarize_results(final_results)

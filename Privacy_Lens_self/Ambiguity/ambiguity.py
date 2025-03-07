@@ -160,6 +160,7 @@ def results_summary(data):
     print(f"Ambiguity Level 3: {count_3}")
 
 if __name__ == "__main__":
+    """    
     # Process final_data.json
     data1 = load_results("final_data.json")
     results1, logs1 = analysis(data1)
@@ -175,6 +176,8 @@ if __name__ == "__main__":
     # Save the final combined results and logs
     save_results(final_results, "final_results_final.json")
     save_results(final_logs, "data_logs.json")
+    """
     
     # Optionally, print a summary of the results
+    final_results = load_results("final_results_final.json")
     results_summary(final_results)
