@@ -15,6 +15,18 @@ def load_results(filename="final_data.json"):
 def save_results(results, filename):
     pd.DataFrame(results).to_json(filename, orient="records", indent=4)
 
+def call_ollama_with_library(prompt, prompt_helper2=""):
+    model = "llama3.1"
+    prompt_helper = (
+        "\n YOUR ONLY OUTPUT SHOULD BE HE RESULT. DONT TELL ME HOW TO DO IT MYSELF OR GIVE ME A CODE ON HOW TO DO IT. give me my desired output that is all. Remember to use the correct name for the output name"
+    )
+    try:
+        response = ollama.generate(model=model, prompt=prompt + prompt_helper + prompt_helper2)
+        return response  # Response is already in JSON format
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
 def get_coherence_score(policy_text):
     prompt = f"""
     You are a highly skilled text analysis assistant with expertise in evaluating privacy policies. Your task is to assess the coherence of the provided privacy policy text. 

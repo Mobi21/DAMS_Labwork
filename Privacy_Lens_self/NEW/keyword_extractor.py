@@ -4,6 +4,7 @@ import pandas as pd
 import re
 import ollama
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
 def load_results(filename="final_data.json"):
@@ -16,14 +17,35 @@ def save_results(results, filename):
 
 def call_ollama_keywords(text, category, description, model="llama3.1"):
     prompt = f"""
-You are a highly skilled text analysis assistant specializing in keyword extraction.
-Identify all occurrences of keywords related to the category: "{category}"
-Description: "{description}"
-Analyze the following text:
-{text}
-Your output must be a single JSON array of keywords, e.g., ["keyword1", "keyword2"].
-If no keywords are found, output an empty array: [].
-"""
+    You are a highly skilled text analysis assistant specializing in extracting specific keywords from provided text.
+    Your task is to identify all occurrences of keywords related to a single category and return them as a list.
+
+    ### Instructions
+    1. **Keyword Identification**:
+       - Identify all keywords that align with the given category description.
+       - Use the category description to determine loosely matching keywords.
+       - Include all occurrences of matching keywords, including duplicates.
+
+    2. **Category and Description**:
+       - **Category**: "{category}"
+       - **Description**: "{description}"
+
+    3. **Output Requirements**:
+       - Your output must be a single structured JSON array containing all matching keywords, e.g.,:
+         ```
+         ["keyword1", "keyword2", "keyword3", ...]
+         ```
+       - If no matching keywords are found, return an empty array: `[]`.
+       - Provide no other text or commentary outside the JSON array.
+
+    ### Text to Analyze
+    {text}
+
+    ### Important Notes
+    - Base your analysis solely on the category description and the text provided.
+    - Include duplicates in the JSON array.
+    - Ensure the output contains only the JSON array.
+    """
     try:
         response = ollama.generate(model=model, prompt=prompt)
         return response
@@ -31,49 +53,65 @@ If no keywords are found, output an empty array: [].
         print(f"Error: {e}")
         return None
 
-def parse_keywords(response_text):
+# Parsing function for Ollama response
+def parse_keywords_from_text(text):
+    """
+    Extract the text within double quotes inside square brackets.
+    
+    Returns the count of keywords found.
+    """
     try:
-        matches = re.findall(r'"(.*?)"', response_text)
+        # Regular expression to match strings inside double quotes
+        matches = re.findall(r'"(.*?)"', text)
         return len(matches)
     except Exception as e:
-        logging.error(f"Error parsing keywords: {e}")
+        logging.error(f"Error while parsing text: {e}")
         return 0
 
+# Helper function to process a single policy for keyword extraction
 def process_policy_keywords(policy, categories):
     result = {"manufacturer": policy["manufacturer"]}
-    logs = []
+    logs = []  # list to hold log entries for each category
     policy_text = policy["policy_text"]
     for category, description in categories.items():
         retries = 0
         valid = False
-        response_obj = None
-        keyword_count = 0
+        response_dict = None
+        keywords = 0
         while not valid and retries < 5:
             retries += 1
-            response_obj = call_ollama_keywords(policy_text, category, description)
-            response_text = response_obj.get("response") if response_obj and hasattr(response_obj, "get") else ""
-            keyword_count = parse_keywords(response_text)
-            valid = True  # Accept result even if count is zero
-        result[category] = keyword_count
+            response_dict = call_ollama_keywords(policy_text, category, description)
+            response_text = response_dict.get("response") if response_dict else ""
+            keywords = parse_keywords_from_text(response_text)
+            # Accept even a zero count as a valid result
+            if keywords is not None:
+                valid = True
+        if not valid:
+            logging.warning(f"Failed to extract keywords for category {category}.")
+        result[category] = keywords
+        # Log entry capturing full response info along with metadata
         log_entry = {
             "manufacturer": policy["manufacturer"],
             "policy_text": policy_text,
             "category": category,
             "retries": retries
         }
-        if response_obj:
-            log_entry.update(response_obj)
+        if response_dict:
+            log_entry.update(response_dict)
         logs.append(log_entry)
     return result, logs
 
+# Data collection function with concurrency
 def collect_keyword_data(data, categories):
     results = []
     all_logs = []
-    for policy in tqdm(data.to_dict("records"), total=len(data), desc="Keyword Collection"):
-        res, log = process_policy_keywords(policy, categories)
-        results.append(res)
-        all_logs.extend(log)
-    return results, all_logs
+    records = data.to_dict("records")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        for res, log in tqdm(executor.map(lambda record: process_policy_keywords(record, categories), records),
+                             total=len(records), desc="Keyword Collection"):
+            results.append(res)
+            all_logs.extend(log)
+    return pd.DataFrame(results), pd.DataFrame(all_logs)
 
 def run_tests(output_dir="results"):
     categories = {

@@ -17,54 +17,88 @@ def save_results(results, filename):
 
 def call_ollama_last_update_year(policy_text):
     prompt = f"""
-You are an advanced policy analysis AI. Your task is to examine the following privacy policy text and find the year of its most recent update.
-Search for keywords such as "Last Updated", "Effective Date", "Revision Date", etc.
-If found, respond with: "Last_Updated_Year: YYYY"
-If not found or uncertain, respond with: "Last_Updated_Year: 0"
-
-Policy text:
-{policy_text}
-"""
+    You are an advanced policy analysis AI. Your task is to examine the following privacy policy text and find the year of its most recent update.
+    
+    **What to look for**:
+    - Search for any indication of a last revision or effective date. Example keywords:
+      - "Last Updated"
+      - "Effective Date"
+      - "Revision Date"
+      - "Last Revised"
+      - "Amended on"
+      - "Version Date"
+      - "As of"
+      - "Posted on"
+    - Extract the year from the identified date. If multiple years are mentioned, choose the most recent (i.e., the largest year).
+    - If no relevant update year is found, respond with "Last_Updated_Year: 0".
+    
+    **Required Response Format**:
+    Your answer must be exactly one line in either of these two formats:
+    - "Last_Updated_Year: YYYY"
+    - "Last_Updated_Year: 0"
+    
+    Nothing else.
+    
+    Privacy policy text:
+        {policy_text}
+    
+    **Important**:
+    - Do not include any additional text, commentary, or explanation in your response.
+    - If you find multiple possible dates, pick the largest year.
+    - If you are uncertain or no year is explicitly stated, respond with "Last_Updated_Year: 0".
+    """
     try:
         response = ollama.generate(model="llama3.1", prompt=prompt)
         return response
     except Exception as e:
         print(f"Error: {e}")
         return None
-
-def parse_year_response(response_text):
+    
+def parse_year_response(response):
     pattern = r"Last_Updated_Year:\s*(\d{4}|0)"
-    match = re.search(pattern, response_text)
+    match = re.search(pattern, response)
     if match:
         return int(match.group(1))
     else:
-        logging.error("Error parsing update year.")
+        logging.error("Error parsing response.")
         return 0
 
+# Process a single policy for the last update year (with retries and logging)
 def process_policy_year(policy):
     updated_policy = policy.copy()
-    log_entry = {"manufacturer": policy.get("manufacturer", ""), "policy_text": policy.get("policy_text", "")}
+    log_entry = {
+        "manufacturer": policy.get("manufacturer", ""),
+        "policy_text": policy.get("policy_text", "")
+    }
     retries = 0
+    found = False
+    response_obj = None
     last_year = None
-    while retries < 7:
+    while not found and retries < 7:
         retries += 1
         response_obj = call_ollama_last_update_year(updated_policy["policy_text"])
-        response_text = response_obj.get("response") if response_obj and hasattr(response_obj, "get") else ""
-        last_year = parse_year_response(response_text)
-        break  # Accept result even if 0
+        response_text = response_obj.get("response") if response_obj else ""
+        parsed_year = parse_year_response(response_text)
+        # Accept the parsed year (even if it is 0) as valid
+        found = True
+        last_year = parsed_year
     updated_policy["last_updated_year"] = last_year
-    log_entry["last_update_year_log"] = {"response": response_obj, "retries": retries}
+    log_entry["last_update_year_log"] = {
+        "response": response_obj,
+        "retries": retries
+    }
     return updated_policy, log_entry
 
+# Analyze privacy policies for the last update year concurrently
 def analyze_last_update_year(data):
     results = []
     logs = []
     records = data.to_dict("records")
     with ThreadPoolExecutor(max_workers=10) as executor:
-        for res, log in tqdm(executor.map(process_policy_year, records), total=len(records), desc="Update Year Analysis"):
+        for res, log in tqdm(executor.map(process_policy_year, records), total=len(records), desc="Analyzing Policies for Last Update Year"):
             results.append(res)
             logs.append(log)
-    return results, logs
+    return pd.DataFrame(results), pd.DataFrame(logs)
 
 def run_tests(output_dir="results"):
     df1 = load_results("final_data.json")
